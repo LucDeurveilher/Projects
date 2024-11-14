@@ -1,0 +1,12 @@
+Assets/Player
+Assets/Souls/Enemies
+Assets/Souls/Player
+Assets/Souls/Boss
+Assets/Souls/Tutorial/Ronces/InAnim
+Assets/Souls/Tutorial/Ronces/OutAnim
+Assets/Souls/Tutorial/Ronces/Pieux
+Assets/Souls/Boss/StageAttack/Vertical/InAnim
+Assets/Souls/Boss/StageAttack/Vertical/OutAnim
+Assets/Souls/Boss/StageAttack/Horizontal/InAnim
+Assets/Souls/Boss/StageAttack/Horizontal/OutAnim
+Assets/Souls/Boss/Attacking/Bomb/Projectile

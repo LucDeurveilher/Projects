@@ -1,0 +1,3 @@
+Ouvrez le dossier "Dreamscape", puis lancez "Dreamscape.exe". 
+
+Installez le programme fourni VC_redist.x64.exe si nécessaire
