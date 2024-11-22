@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab70258c415a8d4e9def9335e9ea10c, type: 3}
+  m_Name: Heal
+  m_EditorClassIdentifier: 
+  cardName: Heal
+  cardSprite: {fileID: 21300000, guid: 1270fddaff5d5c44da7ce16d3257cd85, type: 3}
+  cardType: 04000000
+  description: Heal a little bit
+  spellType: 0
+  attributeTarget: 00000000
+  attributeChangeAmount: 0a000000

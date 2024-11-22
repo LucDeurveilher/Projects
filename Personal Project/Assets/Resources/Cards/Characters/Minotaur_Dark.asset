@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea67b67b35b97340b82d54f8d3052de, type: 3}
+  m_Name: Minotaur_Dark
+  m_EditorClassIdentifier: 
+  cardName: Minotaur_Dark
+  cardSprite: {fileID: 21300000, guid: be544688299478e4a9cc8b970b2f99d6, type: 3}
+  cardType: 0300000000000000
+  description: damn he really exist
+  health: 10
+  damageMin: 10
+  damageMax: 10
+  damageType: 00000000
+  prefab: {fileID: 5040155807486245710, guid: e61aa4c93f853c94d91678393c13fe23, type: 3}
+  range: 1
+  attackPattern: 0
+  priorityTarget: 0
+  isAllie: 0
