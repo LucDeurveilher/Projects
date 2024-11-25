@@ -13,6 +13,15 @@ public class GameManager : MonoBehaviour
     public bool PlayerTurn = true;
     public bool CardPlayed = false;
 
+    public GameState gameState = GameState.Menu;
+
+    public enum GameState
+    {
+        Menu,
+        Game,
+        Pause
+    }
+
     private void Awake()
     {
         if (Instance == null)

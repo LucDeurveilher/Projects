@@ -9,6 +9,7 @@ public class HandManager : MonoBehaviour
 {
     public GameObject cardPrefab; // assign card prefab in inspector
     public Transform handTransform; //Root of the hand position
+    public Transform AIhandTransform; //Root of the hand position
 
     public int maxHandSize;
 
@@ -51,7 +52,7 @@ public class HandManager : MonoBehaviour
     public void AddCardToAIHand(Card cardData)
     {
         //Instanciate the card
-        GameObject newCard = Instantiate(cardPrefab, -handTransform.position, Quaternion.identity, handTransform);
+        GameObject newCard = Instantiate(cardPrefab, AIhandTransform.position, Quaternion.identity, AIhandTransform);
         cardsInAIHand.Add(newCard);
 
         //Set the cardData of the instantiated card

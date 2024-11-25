@@ -33,17 +33,20 @@ public class GridCellDisplay : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!GameManager.Instance.PlayingCard)
+        if (GameManager.Instance.gameState == GameManager.GameState.Game)
         {
-            spriteRenderer.color = highlighColor;
-        }
-        else if (gridCell.cellFull || gridCell.gridIndex.x > 3)
-        {
-            spriteRenderer.color = negColor;
-        }
-        else
-        {
-            spriteRenderer.color = posColor;
+            if (!GameManager.Instance.PlayingCard)
+            {
+                spriteRenderer.color = highlighColor;
+            }
+            else if (gridCell.cellFull || gridCell.gridIndex.x > 3)
+            {
+                spriteRenderer.color = negColor;
+            }
+            else
+            {
+                spriteRenderer.color = posColor;
+            }
         }
     }
 

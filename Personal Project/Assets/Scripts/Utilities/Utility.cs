@@ -33,6 +33,23 @@ public static class Utility
         group.alpha = alpha;
         yield return null;
     }
+    public static IEnumerator FadeIn(CanvasGroup group, float alpha, float duration, Action onComplete = null)
+    {
+        var time = 0.0f;
+        var originalAlpha = group.alpha;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            group.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
+            yield return new WaitForEndOfFrame();
+        }
+
+        group.alpha = alpha;
+
+        onComplete?.Invoke();
+        yield return null;
+    }
 
     public static IEnumerator FadeOut(CanvasGroup group, float alpha, float duration)
     {
@@ -47,6 +64,23 @@ public static class Utility
         }
 
         group.alpha = alpha;
+        yield return null;
+    }
+    public static IEnumerator FadeOut(CanvasGroup group, float alpha, float duration, Action onComplete = null)
+    {
+        var time = 0.0f;
+        var originalAlpha = group.alpha;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            group.alpha = Mathf.Lerp(originalAlpha, alpha, time / duration);
+            yield return new WaitForEndOfFrame();
+        }
+
+        group.alpha = alpha;
+
+        onComplete?.Invoke();
         yield return null;
     }
 
