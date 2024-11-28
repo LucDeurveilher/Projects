@@ -78,7 +78,8 @@ public class AttackManager : MonoBehaviour
 
             if (targets.Count > 0)
             {
-                StartCoroutine(Utility.TranslateGameObject(attacker, targets[0].transform, 0.2f, true, () => Attack.PlayAnimationAttackAndHit(attacker, targets[0]), 0.6f));//move and play animations
+                //move and play animations
+                StartCoroutine(Utility.ReturnTrip(attacker, targets[0].transform, 0.2f, () => Attack.PlayAnimationAttackAndHit(attacker, targets[0]), 0.6f,Easing.EaseOutCirc));
 
                 AttackTargets(attackerStats, targets);
 

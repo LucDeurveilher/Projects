@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -112,65 +113,7 @@ public static class Utility
         yield return null;
     }
 
-    public static IEnumerator TranslateGameObject(GameObject obj, Transform end, float duration, bool goBackInitialPoint)
-    {
-        var time = 0.0f;
-        var originalPosition = obj.transform.position;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            obj.transform.position = Vector3.Lerp(originalPosition, end.position, time / duration);
-            yield return new WaitForEndOfFrame();
-        }
-
-        obj.transform.position = end.position;
-
-        if (goBackInitialPoint)
-        {
-            time = 0.0f;
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                obj.transform.position = Vector3.Lerp(end.position, originalPosition, time / duration);
-                yield return new WaitForEndOfFrame();
-            }
-
-            obj.transform.position = originalPosition;
-        }
-        yield return null;
-    }
-    public static IEnumerator TranslateGameObject(GameObject obj, Transform end, float duration, bool goBackInitialPoint, Action onComplete = null)
-    {
-        var time = 0.0f;
-        var originalPosition = obj.transform.position;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            obj.transform.position = Vector3.Lerp(originalPosition, end.position, time / duration);
-            yield return new WaitForEndOfFrame();
-        }
-
-        obj.transform.position = end.position;
-        onComplete?.Invoke();
-
-        if (goBackInitialPoint)
-        {
-            time = 0.0f;
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                obj.transform.position = Vector3.Lerp(end.position, originalPosition, time / duration);
-                yield return new WaitForEndOfFrame();
-            }
-
-            obj.transform.position = originalPosition;
-        }
-        yield return null;
-
-    }
-    public static IEnumerator TranslateGameObject(GameObject obj, Transform end, float duration, bool goBackInitialPoint, Action onComplete = null, float waitMiddle = 0)
+    public static IEnumerator TranslateGameObject(GameObject obj, Transform end, float duration, Action onComplete = null)
     {
         var time = 0.0f;
         var originalPosition = obj.transform.position;
@@ -187,22 +130,66 @@ public static class Utility
         obj.transform.position = end.position;
         onComplete?.Invoke();
 
-        yield return new WaitForSeconds(waitMiddle);
-
-        if (goBackInitialPoint)
-        {
-            time = 0.0f;
-            while (time < duration)
-            {
-                time += Time.deltaTime;
-                obj.transform.position = Vector3.Lerp(endPos, originalPosition, time / duration);
-                yield return new WaitForEndOfFrame();
-            }
-
-            obj.transform.position = originalPosition;
-        }
         yield return null;
 
+    }
+
+    //Particular fonction 
+    public static IEnumerator ReturnTrip(GameObject obj, Transform end, float duration, Action onComplete = null, float waitMiddle = 0, Func<float, float> easingFunction = null)
+    {
+        var time = 0.0f;
+        var originalPosition = obj.transform.position;
+
+        Vector3 endPos = end.position;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            obj.transform.position = Easing.EasingVector(originalPosition, endPos, time / duration, easingFunction);
+            yield return new WaitForEndOfFrame();
+        }
+
+        obj.transform.position = end.position;
+        onComplete?.Invoke();
+
+        yield return new WaitForSeconds(waitMiddle);
+
+
+        time = 0.0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            obj.transform.position = Easing.EasingVector(endPos, originalPosition, time / duration, easingFunction);
+            yield return new WaitForEndOfFrame();
+        }
+
+        obj.transform.position = originalPosition;
+
+
+        yield return null;
+
+    }
+
+    public static IEnumerator TranslateLocalPos(GameObject _origin, Vector3 _endPos, float duration, Func<float, float> easingFunction = null)
+    {
+        float time = 0.0f;
+        Vector3 originalPosition = _origin.transform.localPosition;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            if (easingFunction != null)
+            {
+                _origin.transform.localPosition = Easing.EasingVector(originalPosition, _endPos, time / duration, easingFunction);
+            }
+            else
+            {
+                _origin.transform.localPosition = Vector3.Lerp(originalPosition, _endPos, time / duration);
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        _origin.transform.localPosition = _endPos;
+        yield return null;
     }
 
     public static IEnumerator PlayFonctionAfterTimer(float time, Action onComplete)

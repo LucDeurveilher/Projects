@@ -36,7 +36,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
     HandManager handManager;
     DiscardManager discardManager;
 
-
+    Coroutine actualCoroutine;
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -148,11 +148,12 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
             {
                 currentState = 3;
                 playArrow.SetActive(true);
-                rectTransform.localPosition = Vector3.Lerp(rectTransform.position, playPosition, lerpFactor);
+
+                //move to play position
+                actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, playPosition, 1, Easing.EaseOutExpo));
             }
         }
     }
-
 
 
     private void HandleHoverState()
@@ -164,7 +165,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
     private void HandleDragState()
     {
         rectTransform.localRotation = Quaternion.identity;
-        rectTransform.position = Vector3.Lerp(rectTransform.position, Input.mousePosition, lerpFactor);
+        rectTransform.position = Easing.EasingVector(rectTransform.position, Input.mousePosition, lerpFactor,Easing.EaseOutQuad) ;
     }
 
     private void HandlePlayState()
@@ -174,7 +175,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
             GameManager.Instance.PlayingCard = true;
         }
 
-        rectTransform.localPosition = playPosition;
+
         rectTransform.localRotation = Quaternion.identity;
 
         if (!Input.GetMouseButton(0))
@@ -198,6 +199,9 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
         if (Input.mousePosition.y < cardPlay.y)
         {
+            if (actualCoroutine != null)//cancel movement coroutine
+                StopCoroutine(actualCoroutine);
+
             currentState = 2;
             playArrow.SetActive(false);
         }
