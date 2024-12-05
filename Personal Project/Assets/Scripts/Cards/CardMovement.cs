@@ -92,11 +92,18 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
                 if (!Input.GetMouseButton(0)) // check if mouse button is realised
                 {
+                    StopAllCoroutines();
                     TransitionToState0();
                 }
                 break;
             case 3:
                 HandlePlayState();
+
+                if (!Input.GetMouseButton(0)) // check if mouse button is realised
+                {
+                    StopAllCoroutines();
+                    TransitionToState0();
+                }
                 break;
         }
     }
@@ -107,7 +114,10 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
         GameManager.Instance.PlayingCard = false;
         rectTransform.localScale = originalScale;
         rectTransform.localRotation = originalRotation;
-        rectTransform.localPosition = originalPosition;
+
+        actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, originalPosition, 0.5f, Easing.EaseOutExpo));
+        //rectTransform.localPosition = originalPosition;
+
         glowEffect.SetActive(false);//disable glow effect;
         playArrow.SetActive(false);//disable playArrow
     }
@@ -150,7 +160,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
                 playArrow.SetActive(true);
 
                 //move to play position
-                actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, playPosition, 1, Easing.EaseOutExpo));
+                actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, playPosition, 0.5f, Easing.EaseOutExpo));
             }
         }
     }

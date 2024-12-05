@@ -79,11 +79,7 @@ public class AttackManager : MonoBehaviour
             if (targets.Count > 0)
             {
                 //move and play animations
-                StartCoroutine(Utility.ReturnTrip(attacker, targets[0].transform, 0.2f, () => Attack.PlayAnimationAttackAndHit(attacker, targets[0]), 0.6f,Easing.EaseOutCirc));
-
-                AttackTargets(attackerStats, targets);
-
-                CheckDiedPeople(listVictims);
+                StartCoroutine(Utility.ReturnTrip(attacker, targets[0].transform, 0.45f, () => ApplyDamage(attacker,targets, listVictims), 0.6f,Easing.EaseInOutExpo));
             }
             else//attack the nexus cause no enemies left
             {
@@ -93,7 +89,7 @@ public class AttackManager : MonoBehaviour
                 Attack.DoDamageNexus(nexus[playerTurnToAttack ? 1 : 0], attacker, damagePopUp);
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1.5f);
         }
 
         totalAttacks++;
@@ -114,6 +110,17 @@ public class AttackManager : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    public void ApplyDamage(GameObject attacker, List<GameObject> targets, List<GameObject> victims)
+    {
+        CharacterStats attackerStats = attacker.GetComponent<CharacterStats>();
+
+        AttackTargets(attackerStats, targets);
+
+        Attack.PlayAnimationAttackAndHit(attacker, targets);
+
+        CheckDiedPeople(victims);
     }
 
     public List<GameObject> FindTargets(GameObject attackerInGrid, List<GameObject> victims)
@@ -170,7 +177,6 @@ public class AttackManager : MonoBehaviour
         }
         return target;
     }
-
     void AttackTargets(CharacterStats attacker, List<GameObject> targets)
     {
         foreach (GameObject target in targets)

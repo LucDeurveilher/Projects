@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public bool PlayerTurn = true;
     public bool CardPlayed = false;
 
+    public bool BattleSet = false;
+
     public GameState gameState = GameState.Menu;
 
     public enum GameState
@@ -85,5 +87,15 @@ public class GameManager : MonoBehaviour
                 DeckManager = GetComponentInChildren<DeckManager>();
             }
         }
+    }
+
+    public void PlayGame()
+    {
+        DeckManager.ContinueBattle();
+    }
+
+    public void NewGame()
+    {
+        DeckManager.ContinueBattle();
     }
 }

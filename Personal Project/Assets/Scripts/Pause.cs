@@ -6,6 +6,7 @@ public class Pause : MonoBehaviour
 {
     Canvas canvas;
     GameManager.GameState lastGameState;
+    Coroutine lastCoroutine;
     private void Start()
     {
         canvas = GetComponent<Canvas>();
@@ -14,15 +15,22 @@ public class Pause : MonoBehaviour
     {
         lastGameState = GameManager.Instance.gameState;
         GameManager.Instance.gameState = GameManager.GameState.Pause;
+
         canvas.enabled = true;
-        Time.timeScale = 0;
+
+        if (lastCoroutine != null)
+            StopCoroutine(lastCoroutine);
+        lastCoroutine = StartCoroutine(Utility.FadeIn(canvas.GetComponent<CanvasGroup>(), 1, 0.15f,() => Time.timeScale = 0));
     }
 
     public void UnPauseGame()
     {
         GameManager.Instance.gameState = lastGameState;
-        canvas.enabled = false;
         Time.timeScale = 1;
+
+        if (lastCoroutine != null)
+            StopCoroutine(lastCoroutine);
+        lastCoroutine = StartCoroutine(Utility.FadeOut(canvas.GetComponent<CanvasGroup>(), 0, 0.15f,()=> canvas.enabled = false));
     }
 
     // Update is called once per frame

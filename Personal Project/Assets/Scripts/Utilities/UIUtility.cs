@@ -32,20 +32,26 @@ public class UIUtility : MonoBehaviour
         StartCoroutine(Utility.FadeOut(canvasGroup, 0, fadeTime));
     }
 
+    public void SwitchCamAndDisableCanva(CanvasGroup canvasGroup)
+    {
+        StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime, () =>canvasGroup.gameObject.SetActive(false)));
+        SwitchCamera();
+    }
+
     public void SwitchCamAfterFadeOut(CanvasGroup canvasGroup)
     {
-        StartCoroutine(Utility.FadeOut(canvasGroup, 0, fadeTime, () => SwitchCamera()));
+        StartCoroutine(Utility.FadeOut(canvasGroup, 0, fadeTime, () => SwitchCamAndDisableCanva(canvasGroup)));
     }
 
     public void CanvasFadeIn(CanvasGroup canvasGroup)
     {
-        Canvas canvas = canvasGroup.GetComponent<Canvas>();
-        canvas.gameObject.SetActive(true);
         StartCoroutine(Utility.FadeIn(canvasGroup, 1, fadeTime)) ;
     }
 
     public void CanvasFadeInDelated(CanvasGroup canvasGroup)
     {
+        canvasGroup.GetComponent<Canvas>().gameObject.SetActive(true);
+       
         if (transitionCameraTime != 0)
         {
             StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime, () => CanvasFadeIn(canvasGroup)));

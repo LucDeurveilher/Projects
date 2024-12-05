@@ -14,7 +14,8 @@ public class DeckManager : MonoBehaviour
 
     private HandManager handManager;
     private DrawPileManager drawPileManager;
-    private bool startBattleRun = true;
+
+    private bool startBattleRun = false;
 
     private void Start()
     {
@@ -52,5 +53,20 @@ public class DeckManager : MonoBehaviour
         drawPileManager.MakeDrawPile(allCards);
         drawPileManager.BattleSetup(startingHandSize, maxHandSize);
         startBattleRun = false;
+    }
+
+    //Create a battle if not already set or do nothing 
+    public void ContinueBattle()
+    {
+        if (!GameManager.Instance.BattleSet)
+        {
+            NewBattle();
+        }
+    }
+
+    public void NewBattle()
+    {
+        GameManager.Instance.BattleSet = true;
+        startBattleRun = true;
     }
 }

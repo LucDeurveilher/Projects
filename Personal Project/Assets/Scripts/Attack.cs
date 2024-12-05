@@ -23,12 +23,16 @@ static public class Attack
         attackerStats.Attack();
     }
 
-    public static void PlayAnimationAttackAndHit(GameObject attacker, GameObject target)
+    public static void PlayAnimationAttackAndHit(GameObject attacker, List<GameObject> target)
     {
         CharacterStats attackerStats = attacker.GetComponent<CharacterStats>();
-        CharacterStats targetStats = target.GetComponent<CharacterStats>();
 
-        targetStats.Hit();
+        foreach (GameObject targetItem in target)
+        {
+            CharacterStats targetStats = targetItem.GetComponent<CharacterStats>();
+            targetStats.Hit();
+        }
+      
         attackerStats.Attack();
     }
 
