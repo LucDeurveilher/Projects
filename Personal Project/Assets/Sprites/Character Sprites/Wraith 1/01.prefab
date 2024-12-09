@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 8970378461188236135}
   - component: {fileID: -4544574692528086502}
   - component: {fileID: 2489170044933429823}
+  - component: {fileID: 6245464123566246634}
   m_Layer: 0
   m_Name: 01
   m_TagString: Untagged
@@ -279,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiPrefab: {fileID: 1554422345395858135, guid: de23a70f1b5a708429ca4862fb198ccd, type: 3}
+  healthUI: {fileID: 0}
   characterStartData: {fileID: 0}
   characterName: 
   cardElementType: 
@@ -290,6 +292,7 @@ MonoBehaviour:
   range: 0
   attackPattern: 0
   priorityTarget: 0
+  isBleeding: 0
   isPoisoned: 0
   isFreeze: 0
   isAllie: 0
@@ -307,6 +310,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toolTip: {fileID: 0}
   fadeTime: 0.1
+--- !u!114 &6245464123566246634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2618609479374377528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce06bfacbed8352428c7aaaacfd705b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3136673096026456894
 GameObject:
   m_ObjectHideFlags: 0

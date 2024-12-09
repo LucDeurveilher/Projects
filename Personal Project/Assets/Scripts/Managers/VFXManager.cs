@@ -32,6 +32,7 @@ public class VFXManager : MonoBehaviour
     public void PlayBleed(Vector3 position, float duration = 0f)
     {
         GameObject vfxInstance = Instantiate(prefabBleed, position, Quaternion.identity);
+        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume() ;
 
         if (duration > 0)
         {
@@ -57,6 +58,8 @@ public class VFXManager : MonoBehaviour
         GameObject vfxInstance = Instantiate(prefabFreeze, parent, true);
         vfxInstance.transform.position = parent.position + offset;
 
+        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+
         GameObject temp = Instantiate(textEffectVFX[1], parent.transform.position + Vector3.up, Quaternion.identity);
         Destroy(temp, 3);
 
@@ -68,6 +71,8 @@ public class VFXManager : MonoBehaviour
         Vector3 offset = Vector3.up/2;
         GameObject vfxInstance = Instantiate(prefabPoison, parent, true);
         vfxInstance.transform.position = parent.position + offset;
+
+        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
 
         GameObject temp = Instantiate(textEffectVFX[2], parent.transform.position + Vector3.up, Quaternion.identity);
         Destroy(temp, 3);
