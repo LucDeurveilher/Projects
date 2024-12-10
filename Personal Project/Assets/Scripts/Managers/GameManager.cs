@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        //DeckManager.NewBattle();
         DeckManager.ContinueBattle();
     }
 }
