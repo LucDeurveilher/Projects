@@ -36,7 +36,8 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
     HandManager handManager;
     DiscardManager discardManager;
 
-    Coroutine actualCoroutine;
+    bool isPlaced = true;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -110,12 +111,24 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
     private void TransitionToState0()
     {
+        isPlaced = false;
+
         currentState = 0;
         GameManager.Instance.PlayingCard = false;
         rectTransform.localScale = originalScale;
         rectTransform.localRotation = originalRotation;
 
-        actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, originalPosition, 0.5f, Easing.EaseOutExpo));
+        if (rectTransform.localPosition != originalPosition)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Utility.TranslateLocalPos(gameObject, originalPosition, 0.5f, Easing.EaseOutExpo, () => isPlaced = true));
+        }
+        else
+        {
+            isPlaced = true;
+        }
+
+
         //rectTransform.localPosition = originalPosition;
 
         glowEffect.SetActive(false);//disable glow effect;
@@ -124,7 +137,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (currentState == 0)
+        if (currentState == 0 && isPlaced)
         {
             originalPosition = rectTransform.localPosition;
             originalRotation = rectTransform.localRotation;
@@ -159,8 +172,9 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
                 currentState = 3;
                 playArrow.SetActive(true);
 
+                StopAllCoroutines();
                 //move to play position
-                actualCoroutine = StartCoroutine(Utility.TranslateLocalPos(gameObject, playPosition, 0.5f, Easing.EaseOutExpo));
+               StartCoroutine(Utility.TranslateLocalPos(gameObject, playPosition, 0.5f, Easing.EaseOutExpo));
             }
         }
     }
@@ -209,8 +223,7 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
         if (Input.mousePosition.y < cardPlay.y)
         {
-            if (actualCoroutine != null)//cancel movement coroutine
-                StopCoroutine(actualCoroutine);
+           StopAllCoroutines();
 
             currentState = 2;
             playArrow.SetActive(false);

@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Angel_King
   cardSprite: {fileID: 21300000, guid: ee5427690efc2af4089904877f97bab5, type: 3}
   cardType: 0400000001000000
-  description: The king of all
+  description: Attack the lowest health ennemy
   health: 15
   damageMin: 8
   damageMax: 10

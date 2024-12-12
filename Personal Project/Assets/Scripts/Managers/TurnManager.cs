@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,22 +16,29 @@ public class TurnManager : MonoBehaviour
     [SerializeField] Button buttonDraw;
     [SerializeField] TextMeshProUGUI textTurn;//ajouter
 
+    [SerializeField] GameObject gameCamera;
+    [SerializeField] GameObject combatCamera;
+
     public AIBase AI;
 
     static public Action EffectTurn;
+
+    UIUtility uIUtility;
+    [SerializeField] CanvasGroup gameCanvaGroup;
 
     private void Start()
     {
         GameManager.Instance.PlayerTurn = playerTurn;
         RandomStarter();
+
+        uIUtility = gameObject.AddComponent<UIUtility>();
+        uIUtility.fadeTime = 0.25f;
     }
 
     private void Update()
     {
         if (buttonDraw.interactable != !GameManager.Instance.CardPlayed)
             buttonDraw.interactable = !GameManager.Instance.CardPlayed;
-
-
     }
 
     void RandomStarter()
@@ -69,8 +77,8 @@ public class TurnManager : MonoBehaviour
 
         playerTurn = playerTurn ? false : true;
         GameManager.Instance.PlayerTurn = playerTurn;
-       
-         
+
+
         turn++;
         SetText();
 
@@ -88,12 +96,24 @@ public class TurnManager : MonoBehaviour
 
     private void StartCombat()
     {
+        if (GameManager.Instance.gameState == GameManager.GameState.Game)
+        {
+            SwitchCam(gameCamera, combatCamera);
+            uIUtility.CanvasFadeOut(gameCanvaGroup);
+        }
+
         turn = 0;
-        attackManager.StartAttackTurn(playerTurn,() => EndCombat());
+        attackManager.StartAttackTurn(playerTurn, () => EndCombat());
     }
 
     private void EndCombat()
     {
+        if (GameManager.Instance.gameState == GameManager.GameState.Game)
+        {
+            SwitchCam(combatCamera, gameCamera);
+            uIUtility.CanvasFadeIn(gameCanvaGroup);
+        }
+
         EffectTurn?.Invoke();
 
         if (!playerTurn)
@@ -111,5 +131,14 @@ public class TurnManager : MonoBehaviour
     {
         textTurn.text = playerTurn ? "Player turn" : "AI turn";
         buttonTurn.interactable = playerTurn;
+    }
+
+    private void SwitchCam(GameObject actualCam, GameObject nextCam)
+    {
+
+        CinemachineCore.Instance.GetActiveBrain(0).m_DefaultBlend.m_Time = 0.25f;
+        actualCam.SetActive(false);
+        nextCam.SetActive(true);
+
     }
 }

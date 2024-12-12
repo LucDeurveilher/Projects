@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Angel_Mage
   cardSprite: {fileID: 21300000, guid: 1c3c14d3798e03a42a6df1c78e00b4b6, type: 3}
   cardType: 0400000003000000
-  description: Soron him self
+  description: Attack the most health ennemy
   health: 5
   damageMin: 11
   damageMax: 14
@@ -24,4 +24,4 @@ MonoBehaviour:
   range: 4
   attackPattern: 0
   priorityTarget: 3
-  isAllie: 1
+  isAllie: 0

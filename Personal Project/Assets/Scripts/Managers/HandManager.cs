@@ -15,10 +15,13 @@ public class HandManager : MonoBehaviour
 
     public float fanSpread = 8f;
     public float cardSpacing = -100f;
-    public float verticalSpacing = 100f;
+    public float verticalSpacing = 100;
 
     public List<GameObject> cardsInPlayerHand = new List<GameObject>(); //Hold a list of the card objects in our hands
     public List<GameObject> cardsInAIHand = new List<GameObject>(); //Hold a list of the card objects in our hands
+
+
+    [SerializeField] bool debugUpdateHandVisuals = false;
 
 
     void Start()
@@ -28,7 +31,8 @@ public class HandManager : MonoBehaviour
 
     private void Update()
     {
-        //UpdateHandVisuals();
+        if (debugUpdateHandVisuals)
+            UpdateHandVisuals();
     }
 
     public void BattleSetup(int setMaxHandSize)
@@ -64,6 +68,7 @@ public class HandManager : MonoBehaviour
 
     public void UpdateHandVisuals()
     {
+        
         int cardCount = cardsInPlayerHand.Count;
 
         if (cardCount == 1)
@@ -88,6 +93,7 @@ public class HandManager : MonoBehaviour
             //Set card position
             cardsInPlayerHand[i].transform.localPosition = new Vector3(horizontalOffset, verticalOffset, 0f);
         }
+        
     }
 
 }

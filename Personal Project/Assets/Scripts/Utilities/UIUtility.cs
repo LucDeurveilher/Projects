@@ -7,14 +7,16 @@ using static GameManager;
 
 public class UIUtility : MonoBehaviour
 {
-    [SerializeField] float fadeTime;
+    [SerializeField] public float fadeTime;
     [SerializeField] float transitionCameraTime;
-
-    [SerializeField] GameObject actualCam = null;
 
     [SerializeField] GameObject nextCam = null;
     public void SwitchCamera()
     {
+        CinemachineCore.Instance.GetActiveBrain(0).m_DefaultBlend.m_Time = 2f;
+
+        GameObject actualCam = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject;
+
         if (actualCam != null && nextCam != null)
         {
             actualCam.SetActive(false);
@@ -34,7 +36,7 @@ public class UIUtility : MonoBehaviour
 
     public void SwitchCamAndDisableCanva(CanvasGroup canvasGroup)
     {
-        StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime, () =>canvasGroup.gameObject.SetActive(false)));
+        StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime + 0.5f, () =>canvasGroup.gameObject.SetActive(false)));
         SwitchCamera();
     }
 

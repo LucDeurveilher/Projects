@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Goblin
   cardSprite: {fileID: 21300000, guid: 2ca3c4752d50c0e478ccd3b49cac7e79, type: 3}
   cardType: 0100000005000000
-  description: gros baton taper
+  description: Attack in cross on the most curent heath enemy and apply poison
   health: 10
   damageMin: 6
   damageMax: 12
@@ -24,4 +24,4 @@ MonoBehaviour:
   range: 1
   attackPattern: 2
   priorityTarget: 3
-  isAllie: 1
+  isAllie: 0

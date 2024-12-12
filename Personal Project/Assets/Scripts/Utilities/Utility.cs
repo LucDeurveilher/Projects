@@ -170,7 +170,7 @@ public static class Utility
 
     }
 
-    public static IEnumerator TranslateLocalPos(GameObject _origin, Vector3 _endPos, float duration, Func<float, float> easingFunction = null)
+    public static IEnumerator TranslateLocalPos(GameObject _origin, Vector3 _endPos, float duration, Func<float, float> easingFunction = null,Action onComplete = null)
     {
         float time = 0.0f;
         Vector3 originalPosition = _origin.transform.localPosition;
@@ -188,6 +188,7 @@ public static class Utility
             }
             yield return new WaitForEndOfFrame();
         }
+        onComplete?.Invoke();
         _origin.transform.localPosition = _endPos;
         yield return null;
     }

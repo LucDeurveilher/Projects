@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Angel_Girl
   cardSprite: {fileID: 21300000, guid: bf8e74c445fb7ab4d819f35abe39781d, type: 3}
   cardType: 0400000005000000
-  description: The most beautiful girl
+  description: Attack the furthest ennemy
   health: 10
   damageMin: 5
   damageMax: 8
@@ -24,4 +24,4 @@ MonoBehaviour:
   range: 1
   attackPattern: 0
   priorityTarget: 1
-  isAllie: 0
+  isAllie: 1
