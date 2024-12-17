@@ -9,9 +9,13 @@ public class AudioManager : MonoBehaviour
     private AudioSource mainAudioSource;
     private AudioSource nextAudioSource;
 
+    private AudioSource attackAudioSource;
+
     [SerializeField] float transitionTime;
 
     [SerializeField] List<AudioClip> audioClip = new();
+
+    [SerializeField] List<AudioClip> attackAudioClip = new();
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,9 @@ public class AudioManager : MonoBehaviour
         mainAudioSource.loop = true;
         nextAudioSource = gameObject.AddComponent<AudioSource>();
         nextAudioSource.loop = true;
+
+        attackAudioSource = gameObject.AddComponent<AudioSource>();
+        attackAudioSource.loop = false;
 
         mainAudioSource.volume = volume;
         nextAudioSource.volume = 0;
@@ -85,5 +92,13 @@ public class AudioManager : MonoBehaviour
     public float GetVolume()
     {
         return volume;
+    }
+
+    public void PlayAttackAudio(int attackType)
+    {
+        attackAudioSource.clip = attackAudioClip[attackType];
+
+        attackAudioSource.volume = volume;
+        attackAudioSource.Play();
     }
 }

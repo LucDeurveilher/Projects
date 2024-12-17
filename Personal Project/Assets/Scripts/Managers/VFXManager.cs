@@ -22,6 +22,7 @@ public class VFXManager : MonoBehaviour
             return;
         }
         GameObject vfxInstance = Instantiate(prefabVFX[vfxIndex], position, Quaternion.identity);
+        GameManager.Instance.AudioManager.PlayAttackAudio(vfxIndex);
 
         if (duration > 0)
         {
