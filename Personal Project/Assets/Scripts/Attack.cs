@@ -12,7 +12,7 @@ static public class Attack
         attacker.DoDamage(targetStats, popUp);
     }
 
-    static public void DoDamageNexus(Nexus nexus, GameObject attacker, DamagePopUp popUp)
+    static public void DoDamageNexus(Nexus nexus, GameObject attacker, DamagePopUp popUp, VFXManager vfxManager)
     {
         CharacterStats attackerStats = attacker.GetComponent<CharacterStats>();
 
@@ -20,6 +20,8 @@ static public class Attack
         nexus.HitNexus(damage);
 
         popUp.SetDamageText(nexus.transform.position + Vector3.up, damage.ToString());
+
+        vfxManager.PlayVFX((int)attackerStats.cardElementType[0],nexus.transform.position);
         attackerStats.Attack();
     }
 

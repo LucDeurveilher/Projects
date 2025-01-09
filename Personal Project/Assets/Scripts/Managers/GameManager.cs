@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,11 @@ public class GameManager : MonoBehaviour
 
     public bool BattleSet = false;
 
+    public bool GameEnded = false;
+
     public GameState gameState = GameState.Menu;
+
+    public Action ResetGame;
 
     public enum GameState
     {
@@ -91,12 +96,15 @@ public class GameManager : MonoBehaviour
 
     public void PlayGame()
     {
+        //battleset == true
         DeckManager.ContinueBattle();
     }
 
     public void NewGame()
     {
-        //DeckManager.NewBattle();
-        DeckManager.ContinueBattle();
+        ResetGame?.Invoke();
+        DeckManager.NewBattle();
+        //DeckManager.ContinueBattle();
+        GameEnded = false;
     }
 }

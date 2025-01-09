@@ -26,7 +26,7 @@ public class HandManager : MonoBehaviour
 
     void Start()
     {
-
+        GameManager.Instance.ResetGame += ResetHandManager;
     }
 
     private void Update()
@@ -94,6 +94,22 @@ public class HandManager : MonoBehaviour
             cardsInPlayerHand[i].transform.localPosition = new Vector3(horizontalOffset, verticalOffset, 0f);
         }
         
+    }
+
+    void ResetHandManager()
+    {
+        foreach (GameObject obj in cardsInPlayerHand)
+        {
+            Destroy(obj);
+        }
+
+        foreach (GameObject obj in cardsInAIHand)
+        {
+            Destroy(obj);
+        }
+
+        cardsInPlayerHand.Clear();
+        cardsInAIHand.Clear();
     }
 
 }

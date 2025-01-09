@@ -10,6 +10,7 @@ public class OptionsManager : MonoBehaviour
     public bool mute = false;
     public float volume = 1;
     public int resolution = 0;
+    public bool FullScreen = true;
 
     private AudioManager audioManager;
 
@@ -34,11 +35,11 @@ public class OptionsManager : MonoBehaviour
 
     private void AddResolution()
     {
+        resolutions.Add(new Vector2(2560, 1440));
         resolutions.Add(new Vector2(1920, 1080));
         resolutions.Add(new Vector2(1680, 1050));
         resolutions.Add(new Vector2(1280, 800));
         resolutions.Add(new Vector2(1024, 768));
-        resolutions.Add(new Vector2(640, 480));
     }
 
     public TMP_FontAsset GetFontClass(string classId)
@@ -90,6 +91,7 @@ public class OptionsManager : MonoBehaviour
         PlayerPrefs.SetString("mute", mute.ToString());
         PlayerPrefs.SetFloat("volume",audioManager.GetVolume());
         PlayerPrefs.SetInt("resolution", resolution);
+        PlayerPrefs.SetString("fullScreen", FullScreen.ToString());
     }
 
     public void LoadAllSettings()
@@ -97,11 +99,18 @@ public class OptionsManager : MonoBehaviour
         bool.TryParse(PlayerPrefs.GetString("mute", "false"), out mute);
         volume = PlayerPrefs.GetFloat("volume", 1);
         resolution = PlayerPrefs.GetInt("resolution", 0);
+        bool.TryParse(PlayerPrefs.GetString("fullScreen", "true"), out FullScreen);
     }
 
     public void SetScreenResolution(int index)
     {
         resolution = index;
-        Screen.SetResolution((int)resolutions[resolution].x, (int)resolutions[resolution].y, true);
+        Screen.SetResolution((int)resolutions[resolution].x, (int)resolutions[resolution].y, FullScreen);
+    }
+
+    public void SetFullScreen(bool isFullScreen)
+    {
+        FullScreen = isFullScreen;
+        Screen.fullScreen = isFullScreen;
     }
 }

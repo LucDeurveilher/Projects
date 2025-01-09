@@ -18,6 +18,7 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.ResetGame += ClearGrid;
         CreateGrid();
     }
 
@@ -92,7 +93,7 @@ public class GridManager : MonoBehaviour
             // Supprimer l'objet de la liste et le détruire
             gridObjects.Remove(obj);
             StartCoroutine(Utility.FadeOutGameObject(obj, 0, 0.9f));
-            Destroy(obj,1);
+            Destroy(obj, 1);
 
         }
     }
@@ -104,7 +105,7 @@ public class GridManager : MonoBehaviour
 
     public GridCell GetGridCellByObjectIn(GameObject obj)
     {
-        foreach(GameObject cell in gridCells)
+        foreach (GameObject cell in gridCells)
         {
             if (cell.GetComponent<GridCell>().objectInCell == obj)
             {
@@ -113,4 +114,13 @@ public class GridManager : MonoBehaviour
         }
         return null;
     }
+
+    public void ClearGrid()
+    {
+        for (int i = gridObjects.Count - 1; i >= 0; i--)
+        {
+            RemoveObjectToGrid(gridObjects[i]);
+        }
+    }
+
 }

@@ -33,8 +33,17 @@ public class VFXManager : MonoBehaviour
     public void PlayBleed(Vector3 position, float duration = 0f)
     {
         GameObject vfxInstance = Instantiate(prefabBleed, position, Quaternion.identity);
-        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume() ;
 
+        if (!GameManager.Instance.OptionsManager.mute)
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = false;
+            vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+        }
+        else
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = true;
+        }
+        
         if (duration > 0)
         {
             Destroy(vfxInstance, duration);
@@ -59,7 +68,15 @@ public class VFXManager : MonoBehaviour
         GameObject vfxInstance = Instantiate(prefabFreeze, parent, true);
         vfxInstance.transform.position = parent.position + offset;
 
-        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+        if (!GameManager.Instance.OptionsManager.mute)
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = false;
+            vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+        }
+        else
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = true;
+        }
 
         GameObject temp = Instantiate(textEffectVFX[1], parent.transform.position + Vector3.up, Quaternion.identity);
         Destroy(temp, 3);
@@ -73,7 +90,15 @@ public class VFXManager : MonoBehaviour
         GameObject vfxInstance = Instantiate(prefabPoison, parent, true);
         vfxInstance.transform.position = parent.position + offset;
 
-        vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+        if (!GameManager.Instance.OptionsManager.mute)
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = false;
+            vfxInstance.GetComponent<AudioSource>().volume = GameManager.Instance.AudioManager.GetVolume();
+        }
+        else
+        {
+            vfxInstance.GetComponent<AudioSource>().mute = true;
+        }
 
         GameObject temp = Instantiate(textEffectVFX[2], parent.transform.position + Vector3.up, Quaternion.identity);
         Destroy(temp, 3);

@@ -34,6 +34,7 @@ public class DrawPileManager : MonoBehaviour
 
     public void MakeDrawPile(List<Card> cardsToAdd)
     {
+        drawPile.Clear();
         drawPile.AddRange(cardsToAdd);
         Utility.Shuffle(drawPile);
         UpdateDrawPileCount();

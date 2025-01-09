@@ -29,8 +29,8 @@ public class CharacterStatsToolTipDisplay : MonoBehaviour
     {
         if (canvasGroup.alpha != 0)
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,Input.mousePosition, canvas.worldCamera, out Vector2 pos);
-            rectTransform.anchoredPosition = Vector2.Lerp(rectTransform.anchoredPosition,new Vector2(pos.x+ xOffset, pos.y),lerpFactor);
+            //RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,Input.mousePosition, canvas.worldCamera, out Vector2 pos);
+            //rectTransform.anchoredPosition = Vector2.Lerp(rectTransform.anchoredPosition,new Vector2(pos.x+ xOffset, pos.y),lerpFactor);
         }
     }
 

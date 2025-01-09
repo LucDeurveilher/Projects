@@ -40,7 +40,7 @@ public class CharacterStats : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
 
-        GameObject temp =Instantiate(UiPrefab,transform.position + (Vector3.down/6),Quaternion.identity);
+        GameObject temp = Instantiate(UiPrefab, transform.position + (Vector3.down / 6), Quaternion.identity);
 
         healthUI = temp.GetComponent<HealthUI>();
 
@@ -57,7 +57,7 @@ public class CharacterStats : MonoBehaviour
         if (maxHealth < health)
         {
             maxHealth = health;
-            healthUI.UpdateUi(health,maxHealth);
+            healthUI.UpdateUi(health, maxHealth);
         }
 
         Die();
@@ -127,5 +127,11 @@ public class CharacterStats : MonoBehaviour
                 target.effectApplier.AddEffect(type, 2);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (healthUI.gameObject != null)
+            healthUI.gameObject.SetActive(false);
     }
 }

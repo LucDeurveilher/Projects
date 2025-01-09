@@ -59,6 +59,7 @@ public class AttackManager : MonoBehaviour
 
         foreach (GameObject obj in listAttackers)
         {
+
             GameObject attacker = obj;
             CharacterStats attackerStats = attacker.GetComponent<CharacterStats>();
             bool attackerFreeze = attackerStats.isFreeze;
@@ -83,10 +84,20 @@ public class AttackManager : MonoBehaviour
             }
             else//attack the nexus cause no enemies left
             {
-                GameObject popUp = Instantiate(attackPopUp);
-                DamagePopUp damagePopUp = popUp.GetComponent<DamagePopUp>();
+                Nexus victimNexus = nexus[playerTurnToAttack ? 1 : 0];
 
-                Attack.DoDamageNexus(nexus[playerTurnToAttack ? 1 : 0], attacker, damagePopUp);
+                StartCoroutine(Utility.ReturnTrip(attacker, victimNexus.attackZone, 0.45f, () => AttackNexus(victimNexus, attacker), 0.6f, Easing.EaseInOutExpo));
+               
+            }
+
+            if (GameManager.Instance.GameEnded)
+            {
+                onComplete?.Invoke();
+                CheckDiedPeople(allies);
+                CheckDiedPeople(ennemies);
+
+                GameManager.Instance.CardPlayed = false;
+                StopAllCoroutines();
             }
 
             yield return new WaitForSeconds(1.5f);
@@ -100,7 +111,7 @@ public class AttackManager : MonoBehaviour
         }
         else
         {
-            //applies effects
+            //applies effects and end Attack turn
             onComplete?.Invoke();
 
             CheckDiedPeople(allies);
@@ -187,6 +198,14 @@ public class AttackManager : MonoBehaviour
 
             Attack.DoDamage(attacker, target, damagePopUp);
         }
+    }
+
+    void AttackNexus(Nexus nexus,GameObject attacker)
+    {
+        GameObject popUp = Instantiate(attackPopUp);
+        DamagePopUp damagePopUp = popUp.GetComponent<DamagePopUp>();
+
+        Attack.DoDamageNexus(nexus, attacker, damagePopUp, VfxManager);
     }
     private void CheckDiedPeople(List<GameObject> victims)
     {
