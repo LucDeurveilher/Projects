@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Golem_Ice
   cardSprite: {fileID: 21300000, guid: f7fa4d31dd34c12469d4ff3a8556bf4d, type: 3}
-  cardType: 02000000
+  cardType: 0200000003000000
   description: so cold ><
   health: 5
   damageMin: 12

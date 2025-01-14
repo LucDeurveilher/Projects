@@ -36,7 +36,7 @@ public class UIUtility : MonoBehaviour
 
     public void SwitchCamAndDisableCanva(CanvasGroup canvasGroup)
     {
-        StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime + 0.0f, () =>canvasGroup.gameObject.SetActive(false)));
+        StartCoroutine(Utility.PlayFonctionAfterTimer(transitionCameraTime + fadeTime + 0.5f, () =>canvasGroup.gameObject.SetActive(false)));
         SwitchCamera();
     }
 

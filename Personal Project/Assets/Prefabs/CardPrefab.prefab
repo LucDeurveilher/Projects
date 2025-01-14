@@ -3818,6 +3818,9 @@ MonoBehaviour:
   playPositionXDivider: -3
   playPositionXMultiplier: 1.2
   needUpdatePlayPosition: 0
+  spellVFX:
+  - {fileID: 2313600270312949845, guid: 18fd00b5d8928d9438571f8c5ec2ecef, type: 3}
+  - {fileID: 5143363714977426490, guid: 1f03c08e601b91f4d822fb30b831b02a, type: 3}
 --- !u!1 &6951010034142511933
 GameObject:
   m_ObjectHideFlags: 0

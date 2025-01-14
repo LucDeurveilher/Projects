@@ -63,8 +63,12 @@ public class GridManager : MonoBehaviour
                 gridObjects.Add(newObj);
                 cell.objectInCell = newObj;
                 cell.cellFull = true;
+
+               
+
                 return true;
             }
+
         }
         else
         {

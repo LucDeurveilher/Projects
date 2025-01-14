@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static Card;
 using static CharacterStats;
 using static UnityEngine.GraphicsBuffer;
@@ -13,12 +15,13 @@ public class CharacterStats : MonoBehaviour
     public Character characterStartData;
 
     public string characterName;
-    public List<CardType> cardElementType;
+    public List<CardType> cardElementType = new();
+    public int baseMaxHealth;
     public int maxHealth;
     public int health;
     public int damageMin;
     public int damageMax;
-    public List<DamageType> damageType;//if attack have a effect => != None
+    public List<DamageType> damageType = new();//if attack have a effect => != None
     public int range;
     public AttackPattern attackPattern;
     public PriorityTarget priorityTarget;
@@ -35,6 +38,8 @@ public class CharacterStats : MonoBehaviour
     public bool isFreeze = false;
 
     public bool isAllie = false;
+
+    private bool isDied = false;
 
     private void Start()
     {
@@ -66,12 +71,24 @@ public class CharacterStats : MonoBehaviour
     private void SetStartStats()
     {
         characterName = characterStartData.name;
-        cardElementType = characterStartData.cardType;
+        foreach (CardType resourcesCardTypeype in characterStartData.cardType)
+        {
+            CardType temp = resourcesCardTypeype;
+            cardElementType.Add(temp);
+        }
+        //cardElementType = characterStartData.cardType;
         health = characterStartData.health;
+        baseMaxHealth = health;
         maxHealth = health;
         damageMin = characterStartData.damageMin;
         damageMax = characterStartData.damageMax;
-        damageType = characterStartData.damageType;
+
+        foreach (DamageType resourcesDamageType in characterStartData.damageType)
+        {
+            DamageType temp = resourcesDamageType;
+            damageType.Add(temp);
+        }
+        //damageType = characterStartData.damageType;
         range = characterStartData.range;
         attackPattern = characterStartData.attackPattern;
         priorityTarget = characterStartData.priorityTarget;
@@ -86,6 +103,7 @@ public class CharacterStats : MonoBehaviour
     {
         if (health <= 0)
         {
+            isDied = true;
             healthUI.UpdateUi(health, maxHealth);
             animator.SetTrigger("Die");
         }
@@ -131,7 +149,7 @@ public class CharacterStats : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (healthUI.gameObject != null)
+        if (healthUI.gameObject != null && !isDied)
             healthUI.gameObject.SetActive(false);
     }
 }

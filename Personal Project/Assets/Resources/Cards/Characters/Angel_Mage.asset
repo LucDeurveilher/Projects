@@ -24,4 +24,4 @@ MonoBehaviour:
   range: 4
   attackPattern: 0
   priorityTarget: 3
-  isAllie: 0
+  isAllie: 1

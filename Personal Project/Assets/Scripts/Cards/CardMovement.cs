@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -37,6 +38,8 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
     DiscardManager discardManager;
 
     bool isPlaced = true;
+
+    [SerializeField]List<GameObject> spellVFX = new List<GameObject>();
 
     void Awake()
     {
@@ -246,6 +249,8 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
                 discardManager.AddToDiscard(cardData);
                 handManager.UpdateHandVisuals();
 
+                TraitManager.OnGridChange?.Invoke();
+
                 GameManager.Instance.CardPlayed = true;
                 //Debug.Log($"Placed character {characterCard.prefab}");
                 Destroy(gameObject);
@@ -263,6 +268,10 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
             handManager.cardsInPlayerHand.Remove(gameObject);
             discardManager.AddToDiscard(cardData);
             handManager.UpdateHandVisuals();
+
+            GameObject VFX = spellVFX[(int)spellCard.spellType];
+
+            Destroy(Instantiate(VFX, targetStats.gameObject.transform.position + Vector3.forward*10 + Vector3.down*0.25f, VFX.transform.rotation),4);
 
             GameManager.Instance.CardPlayed = true;
             //Debug.Log($"Played spell; {spellCard.name}");
