@@ -6,14 +6,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Trait", menuName = "Traits")]
 public class Trait : ScriptableObject
 {
-    [SerializeField]
-    public List<Character> characters = new();
+    public enum BoostTarget
+    {
+        health,
+        damage
+    }
+    [SerializeField] public Sprite traitIcon;
 
     [SerializeField]
-    string bonus;
+    public Card.CardType elementType;
 
     [SerializeField]
-    List<int> palier = new List<int>();
+    public string description;
 
-    public int number;
+    [SerializeField]
+    public string bonusModif;
+
+    [SerializeField]
+    public List<int> palier = new List<int>();
+
+    [SerializeField]
+    public List<float> multiplicator = new List<float>();
+
+    [SerializeField]
+    public BoostTarget boostTarget;
 }

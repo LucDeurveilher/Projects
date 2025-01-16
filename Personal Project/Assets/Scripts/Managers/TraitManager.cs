@@ -9,10 +9,12 @@ public class TraitManager : MonoBehaviour
     GridManager gridManager;
     List<Trait> traits = new();
 
-    List<Trait> activatedTraits = new();
+    List<TraitStats> activatedTraits = new();
 
     public List<CharacterStats> allies = new List<CharacterStats>();
     public List<CharacterStats> ennemies = new List<CharacterStats>();
+
+    [SerializeField] TraitUi TraitUi;
 
     public static Action OnGridChange;
 
@@ -30,7 +32,7 @@ public class TraitManager : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         ResetTraits();
 
-        OnGridChange += CheckTraits;
+        OnGridChange += UpdateTraits;
     }
 
     private void SetAlliesEnnemies()
@@ -53,12 +55,16 @@ public class TraitManager : MonoBehaviour
         }
     }
 
+    void UpdateTraits()
+    {
+        StartCoroutine(Utility.PlayFonctionAfterTimer(0.1f, () => CheckTraits()));//Let CharacterStat Set
+    }
+
     void ResetTraits()
     {
-        activatedTraits.Clear();
-        foreach (Trait trait in traits)
+        foreach (TraitStats trait in activatedTraits)
         {
-            trait.number = 0;
+            trait.ResetTrait();
         }
     }
 
@@ -67,18 +73,46 @@ public class TraitManager : MonoBehaviour
         SetAlliesEnnemies();
         ResetTraits();
 
-        foreach (CharacterStats stats in allies)
+        foreach (Trait trait in traits)
         {
-            foreach (Trait trait in traits)
-            {
-                if (trait.characters.Contains(stats.characterStartData))
-                {
-                    Debug.Log("trait detected");
-                    trait.number++;
+            int numActivation = 0;
 
-                    activatedTraits.Add(trait);
+            foreach (CharacterStats stats in allies)
+            {
+
+                foreach (Card.CardType element in stats.cardElementType)
+                {
+                    if (trait.elementType == element)
+                    {
+                        numActivation++;
+
+                        TraitStats traitStats = FindTraitStat(trait);
+
+                        if (traitStats == null)
+                        {
+                            TraitStats newTraitStat = new TraitStats();
+                            newTraitStat.SetTrait(trait);
+
+                            newTraitStat.AddCharacterStat(stats);
+
+                            activatedTraits.Add(newTraitStat);
+
+                            TraitUi.AddUITrait(trait);
+                        }
+                        else
+                        {
+                            traitStats.AddCharacterStat(stats);
+                        }
+
+                    }
                 }
-                Debug.Log(stats.characterStartData);
+
+            }
+
+            if (numActivation <= 0)
+            {
+                activatedTraits.Remove(FindTraitStat(trait));
+                TraitUi.RemoveUITrait(trait);
             }
         }
 
@@ -87,14 +121,23 @@ public class TraitManager : MonoBehaviour
 
     void ActiveBoostTraits()
     {
-        foreach(Trait trait in activatedTraits)
+        foreach (TraitStats traitStats in activatedTraits)
         {
-            foreach(CharacterStats stats in allies)
+            traitStats.Boost(allies);
+        }
+    }
+
+    TraitStats FindTraitStat(Trait trait)
+    {
+        foreach (TraitStats stats in activatedTraits)
+        {
+            if (stats.trait == trait)
             {
-                float temp = (float)stats.health * 1.5f;
-                stats.health = (int)temp;
+                return stats;
             }
         }
+
+        return null;
     }
 
 }

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64d2d89da9185394c8aa5dbd8591703d, type: 3}
-  m_Name: Light
+  m_Name: Dark
   m_EditorClassIdentifier: 
-  traitIcon: {fileID: -4007279082606720751, guid: b0f85d5a744f799449233745652b567a, type: 3}
-  elementType: 4
-  description: Boost your actual health
-  bonusModif: health
+  traitIcon: {fileID: -6658015361760761495, guid: 7ae2be9a267597a4596c1cdebed8f84d, type: 3}
+  elementType: 3
+  description: Boost your damages
+  bonusModif: damages
   palier: 0100000002000000
   multiplicator:
-  - 1.5
-  - 2
-  boostTarget: 0
+  - 1.1
+  - 1.3
+  boostTarget: 1
