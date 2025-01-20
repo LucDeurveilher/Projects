@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64d2d89da9185394c8aa5dbd8591703d, type: 3}
-  m_Name: Dark
+  m_Name: Water
   m_EditorClassIdentifier: 
-  traitIcon: {fileID: -6658015361760761495, guid: 7ae2be9a267597a4596c1cdebed8f84d, type: 3}
-  elementType: 3
-  description: Boost your crit damage
-  bonusModif: Crit damage
-  palier: 0100000002000000030000000400000005000000
-  multiplicator: 050000000a0000000f000000140000001e000000
-  boostTarget: 4
+  traitIcon: {fileID: 21300000, guid: 17c26c066b7bfca40b0158b6ccfeecae, type: 3}
+  elementType: 2
+  description: Boost your effects
+  bonusModif: Effect boost
+  palier: 010000000200000003000000
+  multiplicator: 64000000c80000002c010000
+  boostTarget: 5

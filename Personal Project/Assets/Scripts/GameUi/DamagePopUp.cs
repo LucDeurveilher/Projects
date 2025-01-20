@@ -12,7 +12,7 @@ public class DamagePopUp : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         StartCoroutine(Utility.FadeIn(canvasGroup, 1.0f, 0.25f));
-        Destroy(gameObject, 1);
+        Destroy(gameObject, 1.25f);
     }
 
     // Update is called once per frame
@@ -20,13 +20,14 @@ public class DamagePopUp : MonoBehaviour
     {
         if (canvasGroup.alpha >= 1.0f)
         {
-            StartCoroutine(Utility.FadeOut(canvasGroup, 0.0f, 0.5f));
+            StartCoroutine(Utility.FadeOut(canvasGroup, 0.0f, 1.0f));
         }
     }
 
-    public void SetDamageText(Vector3 pos,string text)
+    public void SetDamageText(Vector3 pos,string text, Color color)
     { 
         transform.position = pos;
         damage.text = text;
+        damage.color = color;
     }
 }

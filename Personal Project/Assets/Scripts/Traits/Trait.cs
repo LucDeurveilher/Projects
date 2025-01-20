@@ -9,7 +9,11 @@ public class Trait : ScriptableObject
     public enum BoostTarget
     {
         health,
-        damage
+        dodgeChance,
+        damage,
+        critChance,
+        critDamage,
+        effectBoost
     }
     [SerializeField] public Sprite traitIcon;
 
@@ -26,7 +30,7 @@ public class Trait : ScriptableObject
     public List<int> palier = new List<int>();
 
     [SerializeField]
-    public List<float> multiplicator = new List<float>();
+    public List<int> multiplicator = new List<int>();
 
     [SerializeField]
     public BoostTarget boostTarget;

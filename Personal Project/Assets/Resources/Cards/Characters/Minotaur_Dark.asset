@@ -15,13 +15,16 @@ MonoBehaviour:
   cardName: Minotaur_Dark
   cardSprite: {fileID: 21300000, guid: be544688299478e4a9cc8b970b2f99d6, type: 3}
   cardType: 0300000000000000
-  description: damn he really exist
+  description: perfectly balanced
   health: 10
   damageMin: 10
   damageMax: 10
   damageType: 00000000
   prefab: {fileID: 5040155807486245710, guid: e61aa4c93f853c94d91678393c13fe23, type: 3}
-  range: 1
+  critChance: 0
+  critDamage: 110
+  dodgeChance: 0
+  effectBoost: 0
   attackPattern: 0
   priorityTarget: 0
-  isAllie: 1
+  isAllie: 0

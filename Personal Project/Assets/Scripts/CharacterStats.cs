@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using static Card;
 using static CharacterStats;
+using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.GraphicsBuffer;
 
 public class CharacterStats : MonoBehaviour
@@ -16,13 +17,19 @@ public class CharacterStats : MonoBehaviour
 
     public string characterName;
     public List<CardType> cardElementType = new();
-    public int baseMaxHealth;
     public int maxHealth;
     public int health;
     public int damageMin;
     public int damageMax;
     public List<DamageType> damageType = new();//if attack have a effect => != None
-    public int range;
+    
+    ///new
+    public int critChance;
+    public int critDamage;
+    public int dodgeChance;
+    public int effectBoost;
+    ///new
+    
     public AttackPattern attackPattern;
     public PriorityTarget priorityTarget;
 
@@ -78,18 +85,19 @@ public class CharacterStats : MonoBehaviour
         }
         //cardElementType = characterStartData.cardType;
         health = characterStartData.health;
-        baseMaxHealth = health;
+        dodgeChance = characterStartData.dodgeChance;
         maxHealth = health;
         damageMin = characterStartData.damageMin;
         damageMax = characterStartData.damageMax;
+        critChance = characterStartData.critChance;
+        critDamage = characterStartData.critDamage;
 
         foreach (DamageType resourcesDamageType in characterStartData.damageType)
         {
             DamageType temp = resourcesDamageType;
             damageType.Add(temp);
         }
-        //damageType = characterStartData.damageType;
-        range = characterStartData.range;
+        effectBoost = characterStartData.effectBoost;
         attackPattern = characterStartData.attackPattern;
         priorityTarget = characterStartData.priorityTarget;
         isAllie = characterStartData.isAllie;
@@ -124,16 +132,40 @@ public class CharacterStats : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
+    public void ApplyDamage(int damage)
+    {
+        health -= damage;
+        health = Mathf.Max(health, 0);
+    }
+
     public void DoDamage(CharacterStats target, DamagePopUp popUp)
     {
-        int damage = (int)(Random.Range(damageMin, damageMax + 1) * (isPoisoned ? 0.75 : 1));
-        target.health -= damage;
-        target.health = Mathf.Max(target.health, 0);
+        int dodge = (int)(Random.Range(0, 100 + 1));
 
-        //Apply effects
-        AddEffectsOnAttack(target);
+        if (dodge >= target.dodgeChance)//target didnt dodge
+        {
+            int crit = (int)(Random.Range(0, 100 + 1));
+            bool isCrit = false;
 
-        popUp.SetDamageText(target.transform.position + Vector3.up, damage.ToString());
+            if (crit <= critChance)//is the attack a critOne ?
+            {
+                isCrit = true;
+            }
+
+            int damage = (int)(Random.Range(damageMin, damageMax + 1) * (isPoisoned ? 0.75 : 1));
+            damage = damage * (isCrit ? 1 + (critDamage / 100) : 1);
+
+            target.ApplyDamage(damage);
+
+            //Apply effects
+            AddEffectsOnAttack(target);
+
+            popUp.SetDamageText(transform.position + Vector3.up, damage.ToString() + (isCrit? " !":""), isCrit ? Color.red : Color.white);
+        }
+        else
+        {
+            popUp.SetDamageText(target.transform.position + Vector3.up, "Dodge !",Color.blue);
+        }
     }
 
     private void AddEffectsOnAttack(CharacterStats target)
@@ -142,7 +174,7 @@ public class CharacterStats : MonoBehaviour
         {
             if (type != DamageType.None)
             {
-                target.effectApplier.AddEffect(type, 2);
+                target.effectApplier.AddEffect(type,effectBoost);
             }
         }
     }

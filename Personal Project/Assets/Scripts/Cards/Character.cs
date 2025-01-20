@@ -9,7 +9,12 @@ public class Character : Card
     public int damageMax;
     public List<DamageType> damageType;
     public GameObject prefab;
-    public int range;
+
+    public int critChance;
+    public int critDamage;
+    public int dodgeChance;
+    public int effectBoost;
+
     public AttackPattern attackPattern;
     public PriorityTarget priorityTarget;
 

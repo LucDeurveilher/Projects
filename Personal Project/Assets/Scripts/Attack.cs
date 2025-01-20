@@ -19,7 +19,7 @@ static public class Attack
         int damage = Random.Range(attackerStats.damageMin, attackerStats.damageMax + 1);
         nexus.HitNexus(damage);
 
-        popUp.SetDamageText(nexus.transform.position + Vector3.up, damage.ToString());
+        popUp.SetDamageText(nexus.transform.position + Vector3.up, damage.ToString(), Color.white);
 
         vfxManager.PlayVFX((int)attackerStats.cardElementType[0],nexus.transform.position);
         attackerStats.Attack();

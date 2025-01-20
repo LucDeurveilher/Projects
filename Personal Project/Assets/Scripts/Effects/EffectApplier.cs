@@ -11,6 +11,7 @@ public class EffectApplier : MonoBehaviour
     {
         public DamageType type;
         public int numberOfTurn;
+        public int damage;
     }
 
     public List<Effect> effects = new List<Effect>();
@@ -44,7 +45,7 @@ public class EffectApplier : MonoBehaviour
                     break;
                 case DamageType.Bleed:
 
-                    stats.health--;
+                    stats.health-= effect.damage;
 
                     bleed++;
                     break;
@@ -93,10 +94,18 @@ public class EffectApplier : MonoBehaviour
         stats.healthUI.UpdateUi(stats.health, stats.maxHealth);
     }
 
-    public void AddEffect(DamageType type, int numberOfTurn)
+    public void AddEffect(DamageType type, int effectBoost)
     {
+        int numberOfTurn = 1 * (int)(1 + (effectBoost / 100));
+
         Effect effect = new Effect();
-        effect.type = type; effect.numberOfTurn = 2;
+        effect.type = type; 
+        effect.numberOfTurn = numberOfTurn;
+
+        if (effect.type == DamageType.Bleed)
+        {
+            effect.damage = 2 * (1 + (effectBoost / 100));
+        }
 
         effects.Add(effect);
 

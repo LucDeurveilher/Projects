@@ -8,17 +8,17 @@ public class TraitUi : MonoBehaviour
     [SerializeField] GameObject traitPrefab;
     [SerializeField] VerticalLayoutGroup verticalLayoutGroup;
 
-    private Dictionary<Trait, GameObject> traitsIcons = new Dictionary<Trait, GameObject>();
+    private Dictionary<TraitStats, GameObject> traitsIcons = new Dictionary<TraitStats, GameObject>();
 
-    public void AddUITrait(Trait trait)
+    public void AddUITrait(TraitStats trait)
     {
         GameObject uiTrait = Instantiate(traitPrefab, verticalLayoutGroup.transform);
-        uiTrait.GetComponent<TraitIconUi>().trait = trait;
+        uiTrait.GetComponent<TraitIconUi>().traitStats = trait;
 
         traitsIcons.Add(trait, uiTrait);
     }
 
-    public void RemoveUITrait(Trait trait)
+    public void RemoveUITrait(TraitStats trait)
     {
         if (traitsIcons.ContainsKey(trait))
         {

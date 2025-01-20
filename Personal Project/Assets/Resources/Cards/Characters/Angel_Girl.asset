@@ -21,7 +21,10 @@ MonoBehaviour:
   damageMax: 8
   damageType: 00000000
   prefab: {fileID: 1797753984441286, guid: e0bd3015af80d894da39ba968ceb587e, type: 3}
-  range: 1
+  critChance: 0
+  critDamage: 110
+  dodgeChance: 0
+  effectBoost: 0
   attackPattern: 0
   priorityTarget: 1
-  isAllie: 1
+  isAllie: 0

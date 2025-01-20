@@ -24,18 +24,28 @@ public class SpellEffectApplier
             case AttributeTarget.health:
                 targetStats.health += finalChangeAmount;
                 break;
+            case AttributeTarget.dodgeChance:
+                targetStats.dodgeChance += finalChangeAmount;
+                break;
             case AttributeTarget.damage:
                 targetStats.damageMin += finalChangeAmount;
                 targetStats.damageMax += finalChangeAmount;
                 break;
-            case AttributeTarget.range:
-                targetStats.range += finalChangeAmount;
+            case AttributeTarget.critChance:
+                targetStats.critChance += finalChangeAmount;
+                break;
+            case AttributeTarget.critDamage:
+                targetStats.critDamage += finalChangeAmount;
                 break;
             case AttributeTarget.attackPattern:
                 targetStats.attackPattern = spell.attackPatternToChangeTo;
                 break;
             case AttributeTarget.damageType:
                 targetStats.damageType[0] = spell.damageTypeToChangeTo;
+                //ou Add ? plus tard
+                break;
+            case AttributeTarget.effectBoost:
+                targetStats.effectBoost += finalChangeAmount;
                 break;
             case AttributeTarget.cardType:
                 targetStats.cardElementType.Add(spell.cardTypeToChangeTo);
@@ -56,6 +66,10 @@ public class SpellEffectApplier
         stats.health = Mathf.Max(stats.health, 0);
         stats.damageMin = Mathf.Max(stats.damageMin, 0);
         stats.damageMax = Mathf.Max(stats.damageMax, stats.damageMin);
-        stats.range = Mathf.Max(stats.range, 1);
+        stats.dodgeChance = Mathf.Max(stats.dodgeChance, 0);
+        stats.critChance = Mathf.Max(stats.critChance, 0);
+        stats.critDamage = Mathf.Max(stats.critDamage, 0);
+        stats.effectBoost = Mathf.Max(stats.effectBoost, 0);
+        //stats.range = Mathf.Max(stats.range, 1);//ya plus
     }
 }

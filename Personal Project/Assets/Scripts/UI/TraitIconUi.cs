@@ -7,17 +7,23 @@ using UnityEngine.UI;
 
 public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Trait trait;
+    public TraitStats traitStats;
 
-    [SerializeField]Image icon;
+    [SerializeField] Image icon;
     [SerializeField] GameObject infos;
 
     [SerializeField] TextMeshProUGUI traitName;
     [SerializeField] TextMeshProUGUI traitDescription;
     [SerializeField] TextMeshProUGUI traitPalier;
+    [SerializeField] Transform iconCharacters;
 
     // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
+    {
+       // SetCharactersImage();//bug
+    }
+
+    private void Start()
     {
         SetIcon();
         SetInfos();
@@ -31,13 +37,13 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void SetIcon()
     {
-        icon.sprite = trait.traitIcon;
+        icon.sprite = traitStats.trait.traitIcon;
     }
 
     void SetInfos()
     {
-        traitName.text = trait.name;
-        traitDescription.text = trait.description;
+        traitName.text = traitStats.trait.name;
+        traitDescription.text = traitStats.trait.description;
         traitPalier.text = SetPalierText();
     }
 
@@ -45,9 +51,9 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         string finalString = "";
 
-        for (int i = 0; i < trait.palier.Count; i++)
+        for (int i = 0; i < traitStats.trait.palier.Count; i++)
         {
-            finalString += Palier(trait.palier[i], trait.multiplicator[i]);
+            finalString += Palier(traitStats.trait.palier[i], traitStats.multiplicator[i]);
         }
 
         return finalString;
@@ -55,7 +61,7 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     string Palier(int palier, float multiplicator)
     {
-        return $"{palier}/  +{multiplicator}% of {trait.bonusModif}.\n";
+        return $"{palier}/  +{multiplicator}% of {traitStats.trait.bonusModif}.\n";
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -66,5 +72,22 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerExit(PointerEventData eventData)
     {
         infos.SetActive(false);
+    }
+
+    public void SetCharactersImage()
+    {
+        Debug.Log("test");
+        for (int i = iconCharacters.childCount - 1; i >= 0; i--)
+        {
+            Destroy(iconCharacters.GetChild(i).gameObject);
+        }
+
+        foreach (CharacterStats characterStats in traitStats.characters)
+        {
+            GameObject temp = Instantiate(new GameObject(), iconCharacters);
+            Image tempImage = temp.AddComponent<Image>();
+            tempImage.sprite = characterStats.characterStartData.cardSprite;
+        }
+
     }
 }

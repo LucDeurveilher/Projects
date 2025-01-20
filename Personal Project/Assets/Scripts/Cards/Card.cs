@@ -55,10 +55,13 @@ public class Card : ScriptableObject
     public enum AttributeTarget
     {
         health,
+        dodgeChance,
         damage,
-        range,
+        critChance,
+        critDamage,
         attackPattern,
         damageType,
+        effectBoost,
         cardType,
         priorityTarget
     }

@@ -15,13 +15,16 @@ MonoBehaviour:
   cardName: Golem_Earth
   cardSprite: {fileID: 21300000, guid: 06f52e8efe793954d89de00b5aa50955, type: 3}
   cardType: 01000000
-  description: ???
+  description: Tank
   health: 15
   damageMin: 5
   damageMax: 8
   damageType: 00000000
   prefab: {fileID: 1475286338648080, guid: 8db8069ae0754674c8438b689402a2a9, type: 3}
-  range: 2
+  critChance: 0
+  critDamage: 110
+  dodgeChance: 0
+  effectBoost: 0
   attackPattern: 0
   priorityTarget: 0
   isAllie: 0

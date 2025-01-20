@@ -6,9 +6,12 @@ public class CharacterStatsToolTipDisplay : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI cardTypesText;
     public TextMeshProUGUI healthText;
+    public TextMeshProUGUI dodgeChanceText;
     public TextMeshProUGUI damageText;
+    public TextMeshProUGUI critChanceText;
+    public TextMeshProUGUI critDamageText;
     public TextMeshProUGUI damageTypeText;
-    public TextMeshProUGUI rangeText;
+    public TextMeshProUGUI effectBoostText;
     public TextMeshProUGUI attackPaternText;
     public TextMeshProUGUI priorityTargetText;
 
@@ -39,9 +42,12 @@ public class CharacterStatsToolTipDisplay : MonoBehaviour
         nameText.text = $"{stats.characterName} Stats";
         cardTypesText.text = string.Join(", ", stats.cardElementType);
         healthText.text = stats.health.ToString();
+        dodgeChanceText.text = $"{stats.dodgeChance} %";
         damageText.text = $"{stats.damageMin} - {stats.damageMax}";
+        critChanceText.text = $"{stats.critChance} %";
+        critDamageText.text = $"{stats.critDamage} %";
         damageTypeText.text = string.Join(", ", stats.damageType);
-        rangeText.text = stats.range.ToString();
+        effectBoostText.text = $"{stats.effectBoost} %";
         attackPaternText.text = stats.attackPattern.ToString();
         priorityTargetText.text = stats.priorityTarget.ToString();
     }

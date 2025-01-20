@@ -97,7 +97,7 @@ public class TraitManager : MonoBehaviour
 
                             activatedTraits.Add(newTraitStat);
 
-                            TraitUi.AddUITrait(trait);
+                            TraitUi.AddUITrait(newTraitStat);
                         }
                         else
                         {
@@ -111,8 +111,13 @@ public class TraitManager : MonoBehaviour
 
             if (numActivation <= 0)
             {
-                activatedTraits.Remove(FindTraitStat(trait));
-                TraitUi.RemoveUITrait(trait);
+                TraitStats traitStats = FindTraitStat(trait);
+
+                if (traitStats != null)
+                {
+                    activatedTraits.Remove(traitStats);
+                    TraitUi.RemoveUITrait(traitStats);
+                }
             }
         }
 
