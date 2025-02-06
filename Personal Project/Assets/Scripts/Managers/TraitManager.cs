@@ -9,12 +9,14 @@ public class TraitManager : MonoBehaviour
     GridManager gridManager;
     List<Trait> traits = new();
 
-    List<TraitStats> activatedTraits = new();
+    List<TraitStats> activatedTraitsPlayer = new();
+    public List<TraitStats> activatedTraitsAI = new();
 
     public List<CharacterStats> allies = new List<CharacterStats>();
-    public List<CharacterStats> ennemies = new List<CharacterStats>();
+    public List<CharacterStats> enemies = new List<CharacterStats>();
 
-    [SerializeField] TraitUi TraitUi;
+    [SerializeField] TraitUi TraitUiPlayer;
+    [SerializeField] TraitUi TraitUiAI;
 
     public static Action OnGridChange;
 
@@ -33,12 +35,13 @@ public class TraitManager : MonoBehaviour
         ResetTraits();
 
         OnGridChange += UpdateTraits;
+        GameManager.Instance.ResetGame += UpdateTraits;
     }
 
     private void SetAlliesEnnemies()
     {
         allies.Clear();
-        ennemies.Clear();
+        enemies.Clear();
 
         foreach (GameObject obj in gridManager.gridObjects)
         {
@@ -50,7 +53,7 @@ public class TraitManager : MonoBehaviour
             }
             else
             {
-                ennemies.Add(temp);
+                enemies.Add(temp);
             }
         }
     }
@@ -62,10 +65,8 @@ public class TraitManager : MonoBehaviour
 
     void ResetTraits()
     {
-        foreach (TraitStats trait in activatedTraits)
-        {
-            trait.ResetTrait();
-        }
+        activatedTraitsPlayer.ForEach(trait => trait.ResetTrait());
+        activatedTraitsAI.ForEach(trait => trait.ResetTrait());
     }
 
     void CheckTraits()
@@ -86,7 +87,7 @@ public class TraitManager : MonoBehaviour
                     {
                         numActivation++;
 
-                        TraitStats traitStats = FindTraitStat(trait);
+                        TraitStats traitStats = FindTraitStatPlayer(trait);
 
                         if (traitStats == null)
                         {
@@ -95,9 +96,9 @@ public class TraitManager : MonoBehaviour
 
                             newTraitStat.AddCharacterStat(stats);
 
-                            activatedTraits.Add(newTraitStat);
+                            activatedTraitsPlayer.Add(newTraitStat);
 
-                            TraitUi.AddUITrait(newTraitStat);
+                            TraitUiPlayer.AddUITrait(newTraitStat);
                         }
                         else
                         {
@@ -108,15 +109,58 @@ public class TraitManager : MonoBehaviour
                 }
 
             }
-
             if (numActivation <= 0)
             {
-                TraitStats traitStats = FindTraitStat(trait);
+                TraitStats traitStats = FindTraitStatPlayer(trait);
 
                 if (traitStats != null)
                 {
-                    activatedTraits.Remove(traitStats);
-                    TraitUi.RemoveUITrait(traitStats);
+                    activatedTraitsPlayer.Remove(traitStats);
+                    TraitUiPlayer.RemoveUITrait(traitStats);
+                }
+            }
+
+            numActivation = 0;
+
+            foreach (CharacterStats stats in enemies)
+            {
+
+                foreach (Card.CardType element in stats.cardElementType)
+                {
+                    if (trait.elementType == element)
+                    {
+                        numActivation++;
+
+                        TraitStats traitStats = FindTraitStatAI(trait);
+
+                        if (traitStats == null)
+                        {
+                            TraitStats newTraitStat = new TraitStats();
+                            newTraitStat.SetTrait(trait);
+
+                            newTraitStat.AddCharacterStat(stats);
+
+                            activatedTraitsAI.Add(newTraitStat);
+
+                            TraitUiAI.AddUITrait(newTraitStat);
+                        }
+                        else
+                        {
+                            traitStats.AddCharacterStat(stats);
+                        }
+
+                    }
+                }
+
+            }
+            if (numActivation <= 0)
+            {
+                TraitStats traitStats = FindTraitStatAI(trait);
+
+                if (traitStats != null)
+                {
+                    activatedTraitsAI.Remove(traitStats);
+                    TraitUiAI.RemoveUITrait(traitStats);
                 }
             }
         }
@@ -126,15 +170,13 @@ public class TraitManager : MonoBehaviour
 
     void ActiveBoostTraits()
     {
-        foreach (TraitStats traitStats in activatedTraits)
-        {
-            traitStats.Boost(allies);
-        }
+        activatedTraitsPlayer.ForEach(trait => trait.Boost(allies));
+        activatedTraitsAI.ForEach(trait => trait.Boost(enemies));
     }
 
-    TraitStats FindTraitStat(Trait trait)
+    TraitStats FindTraitStatPlayer(Trait trait)
     {
-        foreach (TraitStats stats in activatedTraits)
+        foreach (TraitStats stats in activatedTraitsPlayer)
         {
             if (stats.trait == trait)
             {
@@ -143,6 +185,37 @@ public class TraitManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    TraitStats FindTraitStatAI(Trait trait)
+    {
+        foreach (TraitStats stats in activatedTraitsAI)
+        {
+            if (stats.trait == trait)
+            {
+                return stats;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Trait> GetAllTraitsOfThisCharacter(Character character)
+    {
+        List<Trait> traitsCharacter = new List<Trait>();
+
+        foreach (Trait trait in traits)
+        {
+            foreach (Card.CardType element in character.cardType)
+            {
+                if (trait.elementType == element && !traitsCharacter.Contains(trait))
+                {
+                    traitsCharacter.Add(trait);
+                }
+            }
+        }
+
+        return traits;
     }
 
 }

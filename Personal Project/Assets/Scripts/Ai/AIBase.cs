@@ -11,6 +11,7 @@ public partial class AIBase : MonoBehaviour
     DiscardManager discardManager;
     DrawPileManager drawPileManager;
     TurnManager turnManager;
+    TraitManager traitManager;
 
     private Card cardData;
     private GameObject actualCart;
@@ -26,6 +27,7 @@ public partial class AIBase : MonoBehaviour
         discardManager = FindObjectOfType<DiscardManager>();
         drawPileManager = FindObjectOfType<DrawPileManager>();
         turnManager = FindObjectOfType<TurnManager>();
+        traitManager = FindObjectOfType<TraitManager>();
         turnManager.AI = this;
     }
 
@@ -87,6 +89,8 @@ public partial class AIBase : MonoBehaviour
             cell.objectInCell.GetComponent<CharacterStats>().characterStartData = characterCard;
             Utility.FlipSprite(cell.objectInCell, true, false);
 
+            TraitManager.OnGridChange?.Invoke();
+
             handManager.cardsInAIHand.Remove(actualCart);
             discardManager.AddToDiscard(cardData);
 
@@ -120,7 +124,6 @@ public partial class AIBase : MonoBehaviour
             }
 
         }
-
 
         handManager.cardsInAIHand.Remove(actualCart);
         discardManager.AddToDiscard(cardData);

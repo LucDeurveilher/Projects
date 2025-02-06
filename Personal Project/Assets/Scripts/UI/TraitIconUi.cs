@@ -16,11 +16,14 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] TextMeshProUGUI traitDescription;
     [SerializeField] TextMeshProUGUI traitPalier;
     [SerializeField] Transform iconCharacters;
+    [SerializeField] GameObject prefabTraitCharacterIcon;
+
+    bool imageSet = false;
 
     // Start is called before the first frame update
     private void OnEnable()
     {
-       // SetCharactersImage();//bug
+        ;//bug
     }
 
     private void Start()
@@ -32,7 +35,16 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // Update is called once per frame
     void Update()
     {
+        if (!imageSet && iconCharacters.gameObject.activeInHierarchy)
+        {
+            SetCharactersImage();
+            imageSet = true;
+        }
         
+        if (imageSet && !iconCharacters.gameObject.activeInHierarchy)
+        {
+            imageSet = false;
+        }
     }
 
     void SetIcon()
@@ -76,18 +88,19 @@ public class TraitIconUi : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetCharactersImage()
     {
-        Debug.Log("test");
+        //Debug.Log($"iconCharacters.childCount: {iconCharacters.childCount}");
+
         for (int i = iconCharacters.childCount - 1; i >= 0; i--)
         {
+            //Debug.Log("destroy");
             Destroy(iconCharacters.GetChild(i).gameObject);
         }
 
         foreach (CharacterStats characterStats in traitStats.characters)
         {
-            GameObject temp = Instantiate(new GameObject(), iconCharacters);
-            Image tempImage = temp.AddComponent<Image>();
+            GameObject temp = Instantiate(prefabTraitCharacterIcon, iconCharacters);
+            Image tempImage = temp.GetComponent<Image>();
             tempImage.sprite = characterStats.characterStartData.cardSprite;
         }
-
     }
 }

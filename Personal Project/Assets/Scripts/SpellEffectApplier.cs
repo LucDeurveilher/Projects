@@ -49,6 +49,7 @@ public class SpellEffectApplier
                 break;
             case AttributeTarget.cardType:
                 targetStats.cardElementType.Add(spell.cardTypeToChangeTo);
+                TraitManager.OnGridChange?.Invoke();
                 break;
             case AttributeTarget.priorityTarget:
                 targetStats.priorityTarget = spell.priorityTargetToChangeTo;

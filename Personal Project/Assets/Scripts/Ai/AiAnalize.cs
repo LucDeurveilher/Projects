@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
+//Before new Script
 public partial class AIBase : MonoBehaviour
 {
     //Analize actualState of the game
@@ -11,6 +14,8 @@ public partial class AIBase : MonoBehaviour
     List<GameObject> priorityTargetList = new List<GameObject>();
     List<GameObject> priorityDefendList = new List<GameObject>();
 
+    List<GameObject>CardInHand = new List<GameObject>();
+
     Dictionary<GameObject, Vector2> cardToPlay = new Dictionary<GameObject, Vector2>();
 
     private void AnalizeGrid()
@@ -19,6 +24,7 @@ public partial class AIBase : MonoBehaviour
         cardToPlay.Clear();
         priorityTargetList.Clear();
         priorityDefendList.Clear();
+        CardInHand.Clear();
 
         // Récupérer tous les personnages sur le plateau
         List<CharacterStats> allCharacters = new List<CharacterStats>();
@@ -56,8 +62,86 @@ public partial class AIBase : MonoBehaviour
             }
         }
 
-        // Appelle une méthode pour évaluer les menaces et les opportunités
-        EvaluateThreatsAndOpportunities();
+        //my board empty ?
+        if (allies.Count <= 0)
+        {
+            SetUpBoardBase();
+        }
+        else
+        {
+            // Appelle une méthode pour évaluer les menaces et les opportunités
+            EvaluateThreatsAndOpportunities();
+        }
+
+    
+    }
+
+    private Dictionary<Trait, List<GameObject>> GetTraitsInHand()
+    {
+        Dictionary<Trait, List<GameObject>> ActivateTraits = new Dictionary<Trait, List<GameObject>>();
+        CardInHand = handManager.cardsInAIHand;
+
+        foreach (GameObject cardGameObj in CardInHand)
+        {
+            Card cardData = cardGameObj.GetComponent<CardDisplay>().cardData;
+
+            Character character = cardData as Character;
+
+            if (character != null)
+            {
+                foreach (Trait trait in traitManager.GetAllTraitsOfThisCharacter(character))
+                {
+                    if (ActivateTraits.ContainsKey(trait))
+                    {
+                        ActivateTraits[trait].Add(cardGameObj);
+                    }
+                    else
+                    {
+                        ActivateTraits.Add(trait, new List<GameObject> { cardGameObj });
+                    }
+                }
+            }
+        }
+
+        return ActivateTraits;
+    }
+
+    private void SetUpBoardBase()
+    {
+        Dictionary<Trait, List<GameObject>> tempTraits = GetTraitsInHand();
+
+        // Trier les traits par le nombre de cartes associées (ordre croissant)
+        var sortedTraits = tempTraits.OrderBy(entry => entry.Value.Count).ToList();
+
+        int maxCardsToPlay = 3; // On veut 3 cartes max
+        int cardsAdded = 0;
+
+        foreach (var (trait, cartesAssociees) in sortedTraits)
+        {
+            foreach (GameObject carte in cartesAssociees)
+            {
+                if (cardsAdded >= maxCardsToPlay)
+                    break; // Stop si on a déjà ajouté 3 cartes
+
+                Debug.Log($"Ajout de la carte {carte} du trait {trait}");
+
+                // Générer une position valide
+                Vector2 pos;
+                do
+                {
+                    pos = new Vector2(Random.Range(4, 8), Random.Range(0, 4));
+                } while (!IsPositionCellValid(pos));
+
+                // Ajouter à cardToPlay
+                cardToPlay.Add(carte, pos);
+                cardsAdded++;
+            }
+
+            if (cardsAdded >= maxCardsToPlay)
+                break; // Stop après avoir ajouté 3 cartes
+        }
+
+        ChooseCard();//PlayCards
     }
 
     private void EvaluateThreatsAndOpportunities()

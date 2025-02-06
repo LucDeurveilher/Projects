@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 
   description: Now you attack in Cross
   spellType: 0
-  attributeTarget: 03000000
+  attributeTarget: 05000000
   attributeChangeAmount: 
   attackPatternToChangeTo: 2
   damageTypeToChangeTo: 0

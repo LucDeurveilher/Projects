@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 
   description: Now you will attack the ennemy with the Least Current Health
   spellType: 0
-  attributeTarget: 06000000
+  attributeTarget: 09000000
   attributeChangeAmount: 
   attackPatternToChangeTo: 0
   damageTypeToChangeTo: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 03000000
   description: Change your type
   spellType: 1
-  attributeTarget: 05000000
+  attributeTarget: 08000000
   attributeChangeAmount: 
   attackPatternToChangeTo: 0
   damageTypeToChangeTo: 0

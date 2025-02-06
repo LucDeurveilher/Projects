@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 
   description: Now you can apply Bleeding
   spellType: 0
-  attributeTarget: 04000000
+  attributeTarget: 06000000
   attributeChangeAmount: 
   attackPatternToChangeTo: 0
   damageTypeToChangeTo: 1

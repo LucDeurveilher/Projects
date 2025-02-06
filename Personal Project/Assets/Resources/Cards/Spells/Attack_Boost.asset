@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 
   description: Boost the attack
   spellType: 0
-  attributeTarget: 01000000
+  attributeTarget: 02000000
   attributeChangeAmount: 02000000
   attackPatternToChangeTo: 0
   damageTypeToChangeTo: 0

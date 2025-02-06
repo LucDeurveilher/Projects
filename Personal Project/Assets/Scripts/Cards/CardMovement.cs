@@ -273,6 +273,8 @@ public class CardMovement : MonoBehaviour, IDragHandler, IPointerDownHandler, IP
 
             Destroy(Instantiate(VFX, targetStats.gameObject.transform.position + Vector3.forward*10 + Vector3.down*0.25f, VFX.transform.rotation),4);
 
+            TraitManager.OnGridChange?.Invoke();
+
             GameManager.Instance.CardPlayed = true;
             //Debug.Log($"Played spell; {spellCard.name}");
             Destroy(gameObject);

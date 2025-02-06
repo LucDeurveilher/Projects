@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -19,20 +20,28 @@ public class TurnManager : MonoBehaviour
     [SerializeField] GameObject gameCamera;
     [SerializeField] GameObject combatCamera;
 
+    [SerializeField] Wheel wheel;
+
     public AIBase AI;
 
     static public Action EffectTurn;
+
+    public int starter = 0;
 
     UIUtility uIUtility;
     [SerializeField] CanvasGroup gameCanvaGroup;
 
     private void Start()
     {
-        GameManager.Instance.PlayerTurn = playerTurn;
-        RandomStarter();
-
+        GameManager.Instance.PlayerTurn = false;
+       
         uIUtility = gameObject.AddComponent<UIUtility>();
         uIUtility.fadeTime = 0.25f;
+    }
+
+    public void OpenTheWheel()
+    {
+        StartCoroutine(Utility.PlayFonctionAfterTimer(3,() =>wheel.OpenWheel()));
     }
 
     private void Update()
@@ -41,12 +50,8 @@ public class TurnManager : MonoBehaviour
             buttonDraw.interactable = !GameManager.Instance.CardPlayed;
     }
 
-    void RandomStarter()
+    public void RandomStarter()
     {
-        int starter = Random.Range(0, 2);
-        Debug.Log($"Random = {starter}");
-
-        starter = 0;//always player/AI
 
         if (starter == 0)
         {
@@ -115,6 +120,8 @@ public class TurnManager : MonoBehaviour
         }
 
         EffectTurn?.Invoke();
+
+        TraitManager.OnGridChange?.Invoke();
 
         if (!playerTurn)
         {
