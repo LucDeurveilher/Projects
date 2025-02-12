@@ -19,6 +19,9 @@ public partial class AIBase : MonoBehaviour
     public List<GameObject> allies = new List<GameObject>();
     public List<GameObject> ennemies = new List<GameObject>();
 
+    public bool firstToPlay = true;
+    bool firstBoardSet = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,13 @@ public partial class AIBase : MonoBehaviour
         turnManager = FindObjectOfType<TurnManager>();
         traitManager = FindObjectOfType<TraitManager>();
         turnManager.AI = this;
+
+        //What to do on Reset
+        GameManager.Instance.ResetGame += () => 
+        { 
+            firstToPlay = true; 
+            firstBoardSet = false; 
+        };
     }
 
     IEnumerator WaitToEndTheTurn()

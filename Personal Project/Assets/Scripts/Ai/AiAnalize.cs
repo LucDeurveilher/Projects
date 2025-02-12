@@ -9,14 +9,13 @@ public partial class AIBase : MonoBehaviour
 {
     //Analize actualState of the game
 
-    int totalHealthPointAICards;
-    int totalHealthPointPlayerCards;
     List<GameObject> priorityTargetList = new List<GameObject>();
     List<GameObject> priorityDefendList = new List<GameObject>();
 
     List<GameObject>CardInHand = new List<GameObject>();
 
     Dictionary<GameObject, Vector2> cardToPlay = new Dictionary<GameObject, Vector2>();
+
 
     private void AnalizeGrid()
     {
@@ -62,9 +61,11 @@ public partial class AIBase : MonoBehaviour
             }
         }
 
-        //my board empty ?
-        if (allies.Count <= 0)
+        //first board ?
+        if (firstToPlay && !firstBoardSet)
         {
+            //add if not the first time but board is empty and nexus will be kill if we do nothing
+            firstBoardSet = true;
             SetUpBoardBase();
         }
         else

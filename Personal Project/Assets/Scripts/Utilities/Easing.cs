@@ -69,7 +69,7 @@ public static class Easing
     public static float EaseInOutBounce(float x) =>
         x < 0.5 ? (1 - EaseOutBounce(1 - 2 * x)) / 2 : (1 + EaseOutBounce(2 * x - 1)) / 2;
 
-    // BaseEasing et EasingVector (inchangés)
+    // BaseEasing et EasingVector
     public static float BaseEasing(float start, float end, float t, Func<float, float> easingFunction)
     {
         t = Mathf.Clamp01(t);

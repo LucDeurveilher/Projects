@@ -56,6 +56,7 @@ public class TurnManager : MonoBehaviour
         if (starter == 0)
         {
             playerTurn = true;
+            AI.firstToPlay = false;
         }
         else
         {
