@@ -137,55 +137,16 @@ public class AttackManager : MonoBehaviour
     public List<GameObject> FindTargets(GameObject attackerInGrid, List<GameObject> victims)
     {
         List<GameObject> target = new();
-        PriorityTarget priorityTarget = attackerInGrid.GetComponent<CharacterStats>().priorityTarget;
         AttackPattern attackPattern = attackerInGrid.GetComponent<CharacterStats>().attackPattern;
 
         //Principal target
-        switch (priorityTarget)
-        {
-            case PriorityTarget.Close:
-                target.Add(Attack.FindCloseTarget(attackerInGrid, victims));
-                break;
-            case PriorityTarget.Far:
-                target.Add(Attack.FindFarTarget(attackerInGrid, victims));
-                break;
-            case PriorityTarget.LeastCurrentHealth:
-                target.Add(Attack.FindLeastCurrentHealthTarget(attackerInGrid, victims));
-                break;
-            case PriorityTarget.MostCurrentHealth:
-                target.Add(Attack.FindMostCurrentHealthTarget(attackerInGrid, victims));
-                break;
-            default:
-                break;
-        }
+        target.Add(Attack.FindAttackPriorityTarget(attackerInGrid, victims));
 
         GridCell cellFirstVictim = gridManager.GetGridCellByObjectIn(target.First());
 
         //Second targets
-        switch (attackPattern)
-        {
-            case AttackPattern.Single:
-                //nothing to add
-                break;
-            case AttackPattern.MultiTarget:
-                target.AddRange(Attack.MultiPattern(cellFirstVictim, victims));
-                break;
-            case AttackPattern.Cross:
-                target.AddRange(Attack.CrossPattern(cellFirstVictim, gridManager));
-                break;
-            case AttackPattern.Column:
-                target.AddRange(Attack.ColumnPattern(cellFirstVictim, gridManager));
-                break;
-            case AttackPattern.Row:
-                target.AddRange(Attack.RowPattern(cellFirstVictim, gridManager));
-                break;
-            case AttackPattern.TwoByTwo:
-                break;
-            case AttackPattern.FourByFour:
-                break;
-            default:
-                break;
-        }
+        target.AddRange(Attack.FindVictimsAttackPattern(attackerInGrid,cellFirstVictim, gridManager, victims));
+
         return target;
     }
     void AttackTargets(CharacterStats attacker, List<GameObject> targets)

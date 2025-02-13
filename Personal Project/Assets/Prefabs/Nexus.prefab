@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UiPrefab: {fileID: 1554422345395858135, guid: de23a70f1b5a708429ca4862fb198ccd, type: 3}
-  maxHealth: 1
+  maxHealth: 100
   attackZone: {fileID: 3252982591279746119}
   deadFx:
   - {fileID: 9157105887711914197, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}

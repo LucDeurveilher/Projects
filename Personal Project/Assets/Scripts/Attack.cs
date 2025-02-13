@@ -21,7 +21,7 @@ static public class Attack
 
         popUp.SetDamageText(nexus.transform.position + Vector3.up, damage.ToString(), Color.white);
 
-        vfxManager.PlayVFX((int)attackerStats.cardElementType[0],nexus.transform.position);
+        vfxManager.PlayVFX((int)attackerStats.cardElementType[0], nexus.transform.position);
         attackerStats.Attack();
     }
 
@@ -34,7 +34,7 @@ static public class Attack
             CharacterStats targetStats = targetItem.GetComponent<CharacterStats>();
             targetStats.Hit();
         }
-      
+
         attackerStats.Attack();
     }
 
@@ -69,6 +69,26 @@ static public class Attack
             .Where(victim => victim != attacker)
             .OrderByDescending(victim => victim.GetComponent<CharacterStats>().health)
             .FirstOrDefault();
+    }
+
+    public static GameObject FindAttackPriorityTarget(GameObject attacker, List<GameObject> victims)
+    {
+        switch (attacker.GetComponent<CharacterStats>().priorityTarget)
+        {
+            case Card.PriorityTarget.Close:
+                return FindCloseTarget(attacker, victims);
+
+            case Card.PriorityTarget.Far:
+                return FindFarTarget(attacker, victims);
+
+            case Card.PriorityTarget.LeastCurrentHealth:
+                return FindLeastCurrentHealthTarget(attacker, victims);
+
+            case Card.PriorityTarget.MostCurrentHealth:
+                return FindMostCurrentHealthTarget(attacker, victims);
+            default:
+                return null;
+        }
     }
 
     //Attack Pattern
@@ -160,6 +180,23 @@ static public class Attack
         }
 
         return list;
+    }
+
+    public static List<GameObject> FindVictimsAttackPattern(GameObject attacker, GridCell victimCell, GridManager gridManager, List<GameObject> victims)
+    {
+        switch (attacker.GetComponent<CharacterStats>().attackPattern)
+        {
+            case Card.AttackPattern.MultiTarget:
+                return MultiPattern(victimCell, victims);
+            case Card.AttackPattern.Cross:
+                return CrossPattern(victimCell, gridManager);
+            case Card.AttackPattern.Column:
+                return ColumnPattern(victimCell, gridManager);
+            case Card.AttackPattern.Row:
+                return RowPattern(victimCell,gridManager);
+            default:
+                return new List<GameObject>();
+        }
     }
 
 }

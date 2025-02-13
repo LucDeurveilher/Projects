@@ -104,6 +104,8 @@ public partial class AIBase : MonoBehaviour
             handManager.cardsInAIHand.Remove(actualCart);
             discardManager.AddToDiscard(cardData);
 
+            Destroy(actualCart);
+
             return;//have placed a card
         }
     }

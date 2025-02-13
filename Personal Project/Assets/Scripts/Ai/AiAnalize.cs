@@ -12,7 +12,7 @@ public partial class AIBase : MonoBehaviour
     List<GameObject> priorityTargetList = new List<GameObject>();
     List<GameObject> priorityDefendList = new List<GameObject>();
 
-    List<GameObject>CardInHand = new List<GameObject>();
+    List<GameObject> CardInHand = new List<GameObject>();
 
     Dictionary<GameObject, Vector2> cardToPlay = new Dictionary<GameObject, Vector2>();
 
@@ -62,25 +62,27 @@ public partial class AIBase : MonoBehaviour
         }
 
         //first board ?
-        if (firstToPlay && !firstBoardSet)
+        //if (firstToPlay && !firstBoardSet)
         {
             //add if not the first time but board is empty and nexus will be kill if we do nothing
-            firstBoardSet = true;
-            SetUpBoardBase();
+           // firstBoardSet = true;
+            //SetUpBoardBase();
         }
-        else
+        //else
         {
             // Appelle une méthode pour évaluer les menaces et les opportunités
             EvaluateThreatsAndOpportunities();
         }
 
-    
+
     }
 
     private Dictionary<Trait, List<GameObject>> GetTraitsInHand()
     {
         Dictionary<Trait, List<GameObject>> ActivateTraits = new Dictionary<Trait, List<GameObject>>();
         CardInHand = handManager.cardsInAIHand;
+
+        Debug.Log("card in ai hand : " + CardInHand.Count);//est a 0 au second appel ???
 
         foreach (GameObject cardGameObj in CardInHand)
         {
@@ -109,7 +111,10 @@ public partial class AIBase : MonoBehaviour
 
     private void SetUpBoardBase()
     {
+        Debug.Log("no ally set up board base");
+
         Dictionary<Trait, List<GameObject>> tempTraits = GetTraitsInHand();
+        Debug.Log("dictionnary count :" + tempTraits.Count);
 
         // Trier les traits par le nombre de cartes associées (ordre croissant)
         var sortedTraits = tempTraits.OrderBy(entry => entry.Value.Count).ToList();
@@ -142,6 +147,8 @@ public partial class AIBase : MonoBehaviour
                 break; // Stop après avoir ajouté 3 cartes
         }
 
+        Debug.Log("CardToPlay count : " + cardToPlay.Count);
+        Debug.Break();
         ChooseCard();//PlayCards
     }
 
@@ -162,7 +169,7 @@ public partial class AIBase : MonoBehaviour
         foreach (GameObject ally in allies)
         {
             CharacterStats allyStats = ally.GetComponent<CharacterStats>();
-            int potentialDamage = CalculatePotentialTakeDamage();
+            int potentialDamage = CalculatePotentialTakeDamage(ally);
 
             if (potentialDamage >= allyStats.health)
             {
@@ -173,6 +180,7 @@ public partial class AIBase : MonoBehaviour
         ChooseNextAction();
     }
 
+    //need to modify add a pattern and priorityTarget
     private int CalculatePotentialDamage(CharacterStats enemyStats, int damageToDo)
     {
         int totalPotentialDamage = 0;
@@ -204,16 +212,38 @@ public partial class AIBase : MonoBehaviour
         return totalPotentialDamage;
     }
 
-    private int CalculatePotentialTakeDamage()
+    private int CalculatePotentialTakeDamage(GameObject ally)
     {
         int totalPotentialDamage = 0;
 
-        foreach (GameObject card in ennemies)
+        foreach (GameObject ennemy in ennemies)
         {
-            int damage = card.GetComponent<CharacterStats>().damageMin;
+            List<GameObject> target = new();
 
-             totalPotentialDamage += damage;
-            
+            //Principal target is my ally ?
+            GameObject tempTarget = Attack.FindAttackPriorityTarget(ennemy, allies);
+
+            if (tempTarget != ally)
+            {
+                target.Add(tempTarget);
+
+                GridCell cellFirstVictim = gridManager.GetGridCellByObjectIn(target.First());
+
+                //Second targets is my ally ?
+                List<GameObject> victimsSecongTarget = Attack.FindVictimsAttackPattern(ennemy, cellFirstVictim, gridManager, allies);
+
+                if (!victimsSecongTarget.Contains(ally))
+                {
+                    continue;
+                }
+            }
+
+
+            CharacterStats ennemyStats = ennemy.GetComponent<CharacterStats>();
+            int damage = ennemyStats.damageMax;
+
+            totalPotentialDamage += damage;
+
         }
 
         return totalPotentialDamage;
@@ -273,11 +303,17 @@ public partial class AIBase : MonoBehaviour
 
     private void ChooseNextAction()
     {
-        if (priorityTargetList.Count > 0 || priorityDefendList.Count > 0)
+        //&& CardInHand.Count > 0
+        if ((priorityTargetList.Count > 0 || priorityDefendList.Count > 0) )
         {
             SetUpDefense();
             ChooseCard();
         }
+        //else if (allies.Count() == 0) // add if nexus have critical life
+        //{
+
+            //SetUpBoardBase();
+        //}
         else
         {
             DrawCardAI();
